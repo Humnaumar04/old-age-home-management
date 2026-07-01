@@ -104,14 +104,16 @@
                 </div>
             </div>
 
-            <!-- Card: Emergencies -->
-            <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm flex items-center space-x-4">
-                <div class="p-4 bg-[#E53E3E] text-white rounded-xl text-xl">⚠️</div>
-                <div>
-                    <h3 class="text-3xl font-bold text-gray-800">{{ $emergencies }}</h3>
-                    <p class="text-sm font-medium text-gray-500">Emergencies</p>
+            <!-- Card: Emergencies (Yeh update karein) -->
+            <a href="{{ route('admin.emergency_reports') }}" class="block">
+                <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm flex items-center space-x-4 cursor-pointer">
+                    <div class="p-4 bg-[#E53E3E] text-white rounded-xl text-xl">⚠️</div>
+                    <div>
+                        <h3 class="text-3xl font-bold text-gray-800">{{ $emergencies }}</h3>
+                        <p class="text-sm font-medium text-gray-500">Emergencies</p>
+                    </div>
                 </div>
-            </div>
+            </a>
 
         </div>
 
