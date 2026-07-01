@@ -7,6 +7,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\ResidentController;
 use App\Http\Controllers\Admin\ApprovalController;
+use App\Http\Controllers\EmergencyController;
+use App\Models\EmergencyReport;
 
 // Landing Page
 Route::get('/', function () {
@@ -26,7 +28,9 @@ Route::middleware(['auth'])->group(function () {
         $totalResidents = \App\Models\Resident::count() ?: 0;
         $activeStaff = \App\Models\Staff::count() ?: 0;
         $registeredDonors = 0;
-        $emergencies = 0;
+
+        // --- Yahan humne database se count nikal liya ---
+        $emergencies = \App\Models\EmergencyReport::count() ?: 0;
 
         $recentResidents = \App\Models\Resident::latest()->take(4)->get();
         $pendingApprovals = \App\Models\User::where('status', 'pending')->latest()->take(3)->get();
@@ -35,7 +39,7 @@ Route::middleware(['auth'])->group(function () {
             'totalResidents',
             'activeStaff',
             'registeredDonors',
-            'emergencies',
+            'emergencies', // Yeh variable ab view mein chala gaya
             'recentResidents',
             'pendingApprovals'
         ));
@@ -108,6 +112,7 @@ Route::middleware(['auth'])->group(function () {
 
         return redirect()->route('staff.dashboard')->with('success', 'Health Record Saved Successfully!');
     })->name('staff.save_health');
+
     // Other Dashboards
     Route::get('/resident/dashboard', function () {
         return view('resident.dashboard');
@@ -141,10 +146,14 @@ Route::middleware(['auth'])->group(function () {
     // Approvals
     Route::get('/admin/approvals', [ApprovalController::class, 'index'])->name('admin.approvals');
     Route::post('/admin/approvals/{id}/action', [ApprovalController::class, 'action'])->name('admin.approvals.action');
-    // Temporary route sirf frontend check karne ke liye
-    Route::get('/staff/report-emergency', function () {
-        return view('staff.report-emergency');
-    });
+    // 1. Form show karne aur residents data fetch karne ke liye (GET)
+    Route::get('/staff/report-emergency', [EmergencyController::class, 'index'])->name('emergency.create');
+
+    // 2. Form data submit kar ke save karne ke liye (POST)
+    Route::post('/staff/report-emergency', [EmergencyController::class, 'store'])->name('emergency.store');
+    // Resident ka room number fetch karne ke liye (AJAX Route)
+    Route::get('/staff/get-resident-room/{id}', [EmergencyController::class, 'getRoom'])->name('emergency.getRoom');
+    Route::get('/admin/emergency-reports', [EmergencyController::class, 'showReports'])->name('admin.emergency_reports');
 });
 
 // Authentication Registration Links
