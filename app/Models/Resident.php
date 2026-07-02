@@ -18,8 +18,13 @@ class Resident extends Model
         'medical_condition',
         'bp_systolic',
         'bp_diastolic',
+        'doctor_name',
         'sugar_level',
         'emergency_contact_name',
         'emergency_contact_phone'
     ];
+    public function dailyActivities()
+    {
+        return $this->hasMany(DailyActivity::class);
+    }
 }
