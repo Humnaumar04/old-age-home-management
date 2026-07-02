@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ResidentController;
 use App\Http\Controllers\Admin\ApprovalController;
 use App\Http\Controllers\EmergencyController;
 use App\Models\EmergencyReport;
+use App\Http\Controllers\Resident\DashboardController;
 
 // Landing Page
 Route::get('/', function () {
@@ -114,9 +115,7 @@ Route::middleware(['auth'])->group(function () {
     })->name('staff.save_health');
 
     // Other Dashboards
-    Route::get('/resident/dashboard', function () {
-        return view('resident.dashboard');
-    })->name('resident.dashboard');
+    Route::get('/resident/dashboard', [DashboardController::class, 'index'])->name('resident.dashboard');
     Route::get('/donor/dashboard', function () {
         return view('donor.dashboard');
     })->name('donor.dashboard');
