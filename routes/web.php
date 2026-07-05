@@ -10,6 +10,9 @@ use App\Http\Controllers\Admin\ApprovalController;
 use App\Http\Controllers\EmergencyController;
 use App\Models\EmergencyReport;
 use App\Http\Controllers\Resident\DashboardController;
+use App\Http\Controllers\Resident\ComplaintController;
+use App\Http\Controllers\Resident\HelpRequestController;
+use App\Http\Controllers\Admin\ComplaintManagementController;
 
 // Landing Page
 Route::get('/', function () {
@@ -114,8 +117,22 @@ Route::middleware(['auth'])->group(function () {
         return redirect()->route('staff.dashboard')->with('success', 'Health Record Saved Successfully!');
     })->name('staff.save_health');
 
-    // Other Dashboards
+    // Resident dashboard routes
     Route::get('/resident/dashboard', [DashboardController::class, 'index'])->name('resident.dashboard');
+    Route::get('/resident/submit-complaint', function () {
+        return view('resident.submit-complaint');
+    });
+    // Form dikhane ke liye
+    Route::get('/resident/submit-complaint', [ComplaintController::class, 'create'])->name('resident.submit-complaint');
+
+    // Jab button dabaye to data save karne ke liye
+    Route::post('/resident/submit-complaint', [ComplaintController::class, 'store'])->name('complaint.store');
+    Route::get('/resident/request-help', function () {
+        return view('resident.request-help');
+    })->name('resident.request-help');
+    Route::post('/resident/request-help', [HelpRequestController::class, 'store'])->name('help.store');
+    Route::get('/resident/complaints', [ComplaintController::class, 'index'])->name('resident.complaints');
+    Route::get('/resident/my-requests', [HelpRequestController::class, 'myRequests'])->name('resident.my-requests');
     Route::get('/donor/dashboard', function () {
         return view('donor.dashboard');
     })->name('donor.dashboard');
@@ -141,6 +158,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/residents/{id}/edit', [ResidentController::class, 'edit'])->name('admin.residents.edit');
     Route::put('/admin/residents/{id}', [ResidentController::class, 'update'])->name('admin.residents.update');
     Route::delete('/admin/residents/{id}', [ResidentController::class, 'destroy'])->name('admin.residents.destroy');
+    // Admin manages complaints
+    Route::get('/admin/manage-complaints', function () {
+        return view('admin.manage-complaints');
+    });
+    Route::get('/admin/manage-complaints', [ComplaintManagementController::class, 'index'])->name('admin.manage-complaints');
+    Route::get('/admin/complaints/{id}', [ComplaintManagementController::class, 'show'])->name('admin.complaints.show');
+    Route::post('/admin/complaints/resolve/{id}', [App\Http\Controllers\Admin\ComplaintManagementController::class, 'resolve']);
+    Route::patch('/admin/requests/{id}', [ComplaintManagementController::class, 'updateRequest'])->name('admin.requests.update');
 
     // Approvals
     Route::get('/admin/approvals', [ApprovalController::class, 'index'])->name('admin.approvals');
