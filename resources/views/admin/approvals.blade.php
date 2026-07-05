@@ -44,6 +44,9 @@
                 <a href="{{ route('admin.manage_residents') }}" class="flex items-center space-x-3 hover:bg-[#255A66] px-4 p-3 rounded-xl font-medium transition text-teal-100">
                     <span>👤</span> <span>Manage Residents</span>
                 </a>
+                <a href="/admin/manage-complaints" class="flex items-center space-x-3 hover:bg-[#255A66] px-4 p-3 rounded-xl font-medium transition text-teal-100">
+                    <span>📋</span> <span>Manage Complaints & Requests</span>
+                </a>
                 <a href="{{ route('admin.approvals') }}" class="flex items-center space-x-3 bg-[#2A6673] px-4 p-3 rounded-xl font-medium transition">
                     <span>📋</span> <span>Approvals & Reports</span>
                 </a>
