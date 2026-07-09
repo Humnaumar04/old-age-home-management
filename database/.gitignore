@@ -1,1 +1,6 @@
 *.sqlite*
+/vendor/
+.env
+/node_modules/
+/storage/framework/cache/*
+/storage/logs/*
