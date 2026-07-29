@@ -1,74 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Complaints & Requests - Old Age Home</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-    </style>
-</head>
-
-<body class="bg-[#F8F6F0] text-gray-800 flex h-screen overflow-hidden">
-
-    <!-- SIDEBAR -->
-    <aside class="w-64 bg-[#1E4C56] text-white flex flex-col justify-between p-6 flex-shrink-0">
-        <div>
-            <div class="flex items-center space-x-3 mb-8">
-                <div class="p-2 bg-[#D1884F] rounded-xl text-white">❤️</div>
-                <div>
-                    <h2 class="font-bold text-lg leading-tight">Old Age Home</h2>
-                    <p class="text-xs text-teal-200">Management System</p>
-                </div>
-            </div>
-
-            <div class="flex items-center space-x-3 mb-8 bg-[#255A66] p-3 rounded-xl">
-                <div class="w-10 h-10 rounded-full bg-teal-700 flex items-center justify-center font-bold">UG</div>
-                <div>
-                    <h4 class="font-semibold text-sm">{{ auth()->user()->name ?? 'Usman Ghani' }}</h4>
-                    <p class="text-xs text-teal-300">Administrator</p>
-                </div>
-            </div>
-
-            <nav class="space-y-2">
-                <a href="{{ route('admin.dashboard') }}" class="flex items-center space-x-3 hover:bg-[#255A66] px-4 p-3 rounded-xl font-medium transition text-teal-100">
-                    <span>📊</span> <span>Dashboard</span>
-                </a>
-                <a href="{{ route('admin.manage_staff') }}" class="flex items-center space-x-3 hover:bg-[#255A66] px-4 p-3 rounded-xl font-medium transition text-teal-100">
-                    <span>👥</span> <span>Manage Staff</span>
-                </a>
-                <a href="{{ route('admin.manage_residents') }}" class="flex items-center space-x-3 hover:bg-[#255A66] px-4 p-3 rounded-xl font-medium transition text-teal-100">
-                    <span>👤</span> <span>Manage Residents</span>
-                </a>
-                <!-- Set Active State Color [#2A6673] to this link -->
-                <a href="/admin/manage-complaints" class="flex items-center space-x-3 bg-[#2A6673] px-4 p-3 rounded-xl font-medium transition">
-                    <span>📋</span> <span>Manage Complaints & Requests</span>
-                </a>
-                <a href="{{ route('admin.approvals') }}" class="flex items-center space-x-3 hover:bg-[#255A66] px-4 p-3 rounded-xl font-medium transition text-teal-100">
-                    <span>📋</span> <span>Approvals & Reports</span>
-                </a>
-            </nav>
-        </div>
-
-        <!-- LOGOUT BUTTON -->
-        <div>
-            <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                class="flex items-center space-x-3 hover:bg-red-900 px-4 p-3 rounded-xl font-medium transition text-red-200">
-                <span>🚪</span> <span>Logout</span>
-            </a>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
-                @csrf
-            </form>
-        </div>
-    </aside>
-
-    <!-- MAIN CONTENT AREA -->
-    <main class="flex-1 overflow-y-auto p-8">
+@extends('layouts.admin')
+@section('content')
 
         <!-- Header Panel with Badge Triggers -->
         <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
@@ -365,4 +296,4 @@
     });
 </script>
 
-</html>
+@endsection

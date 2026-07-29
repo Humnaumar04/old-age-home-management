@@ -58,7 +58,7 @@
         <!-- Left Side content -->
         <div class="space-y-6">
             <div class="inline-block bg-[#E8ECE9] text-[#1E3E3F] text-xs font-semibold px-3 py-1 rounded-full tracking-wider uppercase">
-                • Caring Since 2018
+                • Caring Since 2026
             </div>
             <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-[#1E3E3F] leading-[1.15]">
                 A Structured, Loving, and Transparent <span class="underline decoration-[#A3B899] decoration-wavy">Management System</span> for Elderly Care

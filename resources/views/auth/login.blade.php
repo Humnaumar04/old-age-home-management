@@ -9,7 +9,7 @@
                 <div class="bg-[#D97736] p-2 rounded-lg">🧡</div>
                 <h2 class="text-xl font-bold leading-tight">Old Age Home<br><span class="text-xs font-normal opacity-80">Management System</span></h2>
             </div>
-            <p class="text-xs text-[#D97736] font-semibold tracking-wider uppercase mt-8">Caring Since 2018</p>
+            <p class="text-xs text-[#D97736] font-semibold tracking-wider uppercase mt-8">Caring Since 2026</p>
             <h1 class="text-4xl font-serif font-medium mt-4 leading-snug">Dignity, care, and compassion for our beloved elders.</h1>
             <p class="text-sm opacity-70 mt-6 max-w-sm">A unified management platform for residents, staff, families, donors, and volunteers — bringing everyone closer to those who need care.</p>
         </div>

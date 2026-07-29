@@ -2,11 +2,26 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Donation extends Model
 {
-    protected $fillable = ['user_id', 'donation_type', 'details', 'status'];
+    use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'donation_type',
+        'amount',
+        'payment_method',
+        'transaction_id',
+        'item_name',
+        'quantity',
+        'delivery_method',
+        'message',
+        'visibility',
+        'status',
+    ];
 
     public function user()
     {

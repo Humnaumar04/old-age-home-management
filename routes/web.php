@@ -9,10 +9,14 @@ use App\Http\Controllers\Admin\ResidentController;
 use App\Http\Controllers\Admin\ApprovalController;
 use App\Http\Controllers\EmergencyController;
 use App\Models\EmergencyReport;
-use App\Http\Controllers\Resident\DashboardController;
+use App\Http\Controllers\Resident\DashboardController as ResidentDashboardController;
 use App\Http\Controllers\Resident\ComplaintController;
 use App\Http\Controllers\Resident\HelpRequestController;
 use App\Http\Controllers\Admin\ComplaintManagementController;
+use App\Http\Controllers\Donor\DashboardController as DonorDashboardController;
+use App\Http\Controllers\Admin\DonationController;
+use App\Http\Controllers\Donor\DonationController as DonorDonationController;
+
 
 // Landing Page
 Route::get('/', function () {
@@ -48,7 +52,21 @@ Route::middleware(['auth'])->group(function () {
             'pendingApprovals'
         ));
     })->name('admin.dashboard');
+    // Admin Donations Route
+    // Main Donations Hub Page (Jahan 2 options nazar aayenge)
+    Route::get('/admin/donations', [DonationController::class, 'index'])->name('admin.donations.index');
 
+    // Manage Requirements Page (Yeh woh page hai jo abhi aapke paas show ho raha hai)
+    Route::get('/admin/donations/requirements', [DonationController::class, 'requirements'])->name('admin.donations.requirements');
+    Route::post('/admin/donations/requirements', [DonationController::class, 'store'])->name('admin.donations.store');
+
+    // View Donations Page (Donors ki list ke liye)
+    Route::match(['get', 'post'], '/admin/donations/received', [DonationController::class, 'receivedDonations'])->name('admin.donations.received');
+    // 2. Specific donation ko review karne ka page
+    Route::get('/admin/donations/{id}/review', [DonationController::class, 'showReviewDonation'])->name('admin.donations.review');
+
+    // 3. Donation status (Approved/Completed) update karne ke liye
+    Route::post('/admin/donations/{id}/update-status', [DonationController::class, 'updateDonationStatus'])->name('admin.donations.update-status');
     // Fully Functional Dynamic Staff Dashboard Route
     Route::get('/staff/dashboard', function () {
         $totalResidents = \App\Models\Resident::count() ?: 0;
@@ -118,7 +136,7 @@ Route::middleware(['auth'])->group(function () {
     })->name('staff.save_health');
 
     // Resident dashboard routes
-    Route::get('/resident/dashboard', [DashboardController::class, 'index'])->name('resident.dashboard');
+    Route::get('/resident/dashboard', [ResidentDashboardController::class, 'index'])->name('resident.dashboard');
     Route::get('/resident/submit-complaint', function () {
         return view('resident.submit-complaint');
     });
@@ -133,9 +151,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/resident/request-help', [HelpRequestController::class, 'store'])->name('help.store');
     Route::get('/resident/complaints', [ComplaintController::class, 'index'])->name('resident.complaints');
     Route::get('/resident/my-requests', [HelpRequestController::class, 'myRequests'])->name('resident.my-requests');
-    Route::get('/donor/dashboard', function () {
-        return view('donor.dashboard');
-    })->name('donor.dashboard');
+    Route::get('/donor/dashboard', [DonorDashboardController::class, 'index'])->name('donor.dashboard');
+    Route::get('/donor/make-donation', [DonorDonationController::class, 'create'])->name('donor.make-donation');
+    Route::post('/donor/make-donation', [DonorDonationController::class, 'store'])->name('donor.donation.store');
     Route::get('/family/dashboard', function () {
         return view('family.dashboard');
     })->name('family.dashboard');
