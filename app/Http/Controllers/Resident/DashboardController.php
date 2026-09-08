@@ -4,13 +4,16 @@ namespace App\Http\Controllers\Resident;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use App\Models\Resident;
+use App\Models\DailyActivity;
 
 class DashboardController extends Controller
 {
     public function index()
     {
         // Login user ka resident profile dhundein
-        $resident = \App\Models\Resident::where('user_id', \Illuminate\Support\Facades\Auth::id())->first();
+        $resident = Resident::where('user_id', Auth::id())->first();
 
         // Agar resident profile nahi mili toh handle karein
         if (!$resident) {
@@ -18,14 +21,15 @@ class DashboardController extends Controller
         }
 
         // Aaj ki date ki activities fetch karein
-        $activities = \App\Models\DailyActivity::where('resident_id', $resident->id)
-            ->where('date', date('Y-m-d')) // Aaj ki date
+        $activities = DailyActivity::where('resident_id', $resident->id)
+            ->latest('id')
             ->first();
-        // Agar resident record nahi mila, toh user ko batayein ya redirect karein
-        if (!$resident) {
-            return "Resident profile not found for this account. Please contact admin.";
-        }
+        // --- Yahan resident ke liye bhi latest health vitals fetch kar liye hain ---
+        $latestVitals = DB::table('health_logs')
+            ->where('resident_id', $resident->id)
+            ->latest('created_at')
+            ->first();
 
-        return view('resident.dashboard', compact('resident', 'activities'));
+        return view('resident.dashboard', compact('resident', 'activities', 'latestVitals'));
     }
 }

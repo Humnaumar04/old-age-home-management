@@ -21,8 +21,11 @@ class Resident extends Model
         'doctor_name',
         'sugar_level',
         'emergency_contact_name',
-        'emergency_contact_phone'
+        'emergency_contact_phone',
+        'family_user_id', // <-- Yeh add kar diya gaya hai
+        'user_id'          // <-- Yeh bhi add kar diya gaya hai
     ];
+
     public function dailyActivities()
     {
         return $this->hasMany(DailyActivity::class);

@@ -20,7 +20,6 @@
                     <tr class="bg-[#F3EFE6] text-gray-600 text-sm font-semibold uppercase tracking-wider">
                         <th class="p-4 text-center w-16">#</th>
                         <th class="p-4">Name</th>
-                        <th class="p-4">Designation</th>
                         <th class="p-4">Shift</th>
                         <th class="p-4">Phone</th>
                         <th class="p-4">Status</th>
@@ -32,7 +31,6 @@
                     <tr class="hover:bg-gray-50/70 transition">
                         <td class="p-4 text-center text-gray-400 font-medium">{{ $index + 1 }}</td>
                         <td class="p-4 font-semibold text-gray-900">{{ $staff->name }}</td>
-                        <td class="p-4 text-gray-500">{{ $staff->designation }}</td>
                         <td class="p-4">{{ $staff->shift }}</td>
                         <td class="p-4 text-gray-600">{{ $staff->phone }}</td>
                         <td class="p-4">

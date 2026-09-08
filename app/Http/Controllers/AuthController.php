@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Volunteer; // <-- Yeh line yahan add karni hai
 
 class AuthController extends Controller
 {
@@ -33,6 +34,11 @@ class AuthController extends Controller
             if (strtolower($user->role) !== strtolower($request->role)) {
                 Auth::logout();
                 return back()->withErrors(['email' => 'Selected role does not match our records.']);
+            }
+            // Naya check: agar account abhi approve nahi hua
+            if (strtolower($user->status) !== 'approved') {
+                Auth::logout();
+                return back()->withErrors(['email' => 'Your account is still pending Admin approval.']);
             }
 
             $request->session()->regenerate();
@@ -94,8 +100,8 @@ class AuthController extends Controller
             'relative_name' => 'required_if:type,Family',
         ]);
 
-        // 2. Database (users table) mein data save karna
-        \App\Models\User::create([
+        // 2. Database (users table) mein data save karna aur variable mein store karna
+        $user = \App\Models\User::create([
             'name' => $request->first_name . ' ' . $request->last_name,
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
@@ -109,7 +115,19 @@ class AuthController extends Controller
             'status' => 'pending',
         ]);
 
-        // 3. Wapas bhej kar success message dikhana
+        // 3. AGAR USER VOLUNTEER HUA TOH AUTOMATIC VOLUNTEER TABLE MEIN BHI ENTRY BANA DEIN
+        if (strtolower($request->type) === 'volunteer') {
+            Volunteer::create([
+                'user_id' => $user->id,
+                'phone' => $request->phone,
+                'hours_this_month' => 0,
+                'sessions_attended' => 0,
+                'tasks_completed' => 0,
+                'residents_helped' => 0,
+            ]);
+        }
+
+        // 4. Wapas bhej kar success message dikhana
         return redirect()->back()->with('success', 'Your registration request has been submitted! Waiting for Admin approval.');
     }
 }

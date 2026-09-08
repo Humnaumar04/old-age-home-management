@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Resident;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class ResidentController extends Controller
@@ -18,16 +19,19 @@ class ResidentController extends Controller
 
     public function create()
     {
-        return view('admin.add-resident');
+        // Family users ki list fetch karein taake dropdown mein show ho sakein
+        $familyUsers = User::all();
+        return view('admin.add-resident', compact('familyUsers'));
     }
 
     public function store(Request $request)
     {
+        // 1. Sabhi fields ki validation (Age min:60 check ke sath)
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6',
-            'age' => 'required|integer',
+            'age' => 'required|integer|min:60', // Umar kam az kam 60 saal honi chahiye
             'gender' => 'required|string',
             'room_number' => 'required|string',
             'date_of_admission' => 'required|date',
@@ -38,8 +42,12 @@ class ResidentController extends Controller
             'emergency_contact_name' => 'required|string|max:255',
             'emergency_contact_phone' => 'required|string',
             'doctor_name' => 'nullable|string|max:255',
+            'family_user_id' => 'nullable|exists:users,id',
+        ], [
+            'age.min' => 'Old age home admission requires the resident to be at least 60 years old.'
         ]);
 
+        // 2. Resident ka apna User account banana
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -48,8 +56,10 @@ class ResidentController extends Controller
             'status' => 'approved',
         ]);
 
+        // 3. Resident table mein record save karna
         Resident::create([
-            'user_id' => $user->id,
+            'user_id' => $user->id, // Naye resident ki apni ID
+            'family_user_id' => $request->family_user_id, // Dropdown se select kiya gaya family user
             'name' => $request->name,
             'age' => $request->age,
             'gender' => $request->gender,
@@ -70,7 +80,8 @@ class ResidentController extends Controller
     public function edit($id)
     {
         $resident = Resident::findOrFail($id);
-        return view('admin.edit-resident', compact('resident'));
+        $familyUsers = User::all(); // Family users list for edit view dropdown
+        return view('admin.edit-resident', compact('resident', 'familyUsers'));
     }
 
     public function update(Request $request, $id)
@@ -79,7 +90,7 @@ class ResidentController extends Controller
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'age' => 'required|integer',
+            'age' => 'required|integer|min:60',
             'gender' => 'required|string',
             'room_number' => 'required|string',
             'date_of_admission' => 'required|date',
@@ -90,6 +101,9 @@ class ResidentController extends Controller
             'emergency_contact_name' => 'required|string',
             'emergency_contact_phone' => 'required|string',
             'doctor_name' => 'nullable|string|max:255',
+            'family_user_id' => 'nullable|exists:users,id',
+        ], [
+            'age.min' => 'Old age home admission requires the resident to be at least 60 years old.'
         ]);
 
         $resident->update($request->all());

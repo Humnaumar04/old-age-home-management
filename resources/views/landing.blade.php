@@ -42,7 +42,7 @@
             <a href="#features" class="hover:text-[#1E3E3F] transition">About Us</a> <a href="#features" class="hover:text-[#1E3E3F] transition">Features</a>
             <a href="#urgent-needs" class="hover:text-[#1E3E3F] transition">View Needs</a>
             <a href="#urgent-needs" class="hover:text-[#1E3E3F] transition">Donate</a>
-            <a href="#volunteer" class="hover:text-[#1E3E3F] transition">Contact Us</a>
+            <a href="#contact" class="hover:text-[#1E3E3F] transition">Contact Us</a>
         </nav>
 
         <!-- Login Button -->
@@ -313,7 +313,7 @@
         </div>
     </section>
 
-    <footer class="bg-[#152C2D] text-gray-400 pt-16 pb-8 px-6">
+    <footer id="contact" class="bg-[#152C2D] text-gray-400 pt-16 pb-8 px-6">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
             <div class="space-y-4">
                 <div class="flex items-center space-x-3 text-white font-bold text-lg">

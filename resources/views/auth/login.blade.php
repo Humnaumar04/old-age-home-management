@@ -33,7 +33,7 @@
     <div class="w-full md:w-7/12 flex flex-col justify-center px-8 sm:px-16 lg:px-24 py-8">
         <a href="{{ route('landing') }}" class="text-xs text-gray-500 hover:text-gray-800 mb-6 flex items-center gap-1">← Back to Home</a>
 
-        <h2 class="text-3xl font-serif font-bold text-[#1C4E55]">Welcome Back</h2>
+        <h2 class="text-3xl font-serif font-bold text-[#1C4E55]">Welcome!</h2>
         <p class="text-sm text-gray-600 mt-1 mb-8">Sign in to your account to continue</p>
 
         @if ($errors->any())

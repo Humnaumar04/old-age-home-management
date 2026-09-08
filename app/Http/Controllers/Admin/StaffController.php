@@ -32,13 +32,13 @@ class StaffController extends Controller
             'email'    => $request->email,
             'password' => Hash::make($request->password), // Password encrypt hona lazmi hai
             'role'     => 'staff', // Login ke liye role 'staff' set ho raha hai
+            'status' => 'approved',
         ]);
 
-        // 2. Phir staff table mein details aur 'user_id' link karein
+        // 2. Phir staff table mein details aur 'user_id' link karein (Designation hata di gayi hai)
         \App\Models\Staff::create([
             'user_id'         => $user->id, // Yahan 'users' table ki id aa jayegi
             'name'            => $request->name,
-            'designation'     => $request->designation,
             'cnic'            => $request->cnic,
             'phone'           => $request->phone,
             'email'           => $request->email,
@@ -53,6 +53,7 @@ class StaffController extends Controller
 
         return redirect()->route('admin.manage_staff')->with('success', 'Staff added successfully!');
     }
+
     // Edit Form ka page dikhane ke liye
     public function edit($id)
     {
@@ -66,13 +67,33 @@ class StaffController extends Controller
         $staff = Staff::findOrFail($id);
 
         $request->validate([
-            'name' => 'required|string|max:255',
-            'designation' => 'required|string',
+            'name'  => 'required|string|max:255',
             'phone' => 'required|string',
             'shift' => 'required|string',
         ]);
 
-        $staff->update($request->all());
+        // 1. Staff table ka data update karein
+        $staff->update($request->except('designation'));
+
+        // 2. Agar staff ke sath user account linked hai, toh users table mein bhi naam aur email update karein
+        if ($staff->user_id) {
+            $user = User::find($staff->user_id);
+            if ($user) {
+                $user->update([
+                    'name'  => $request->name,
+                    'email' => $request->email ?? $user->email, // Agar email diya hai toh update ho jaye
+                    'password' => $request->password ?? $user->password,
+                    'cnic'            => $request->cnic,
+                    'phone'           => $request->phone,
+                    'shift'           => $request->shift,
+                    'date_of_joining' => $request->date_of_joining,
+                    'salary'          => $request->salary,
+                    'address'         => $request->address,
+                    'emergency_name'  => $request->emergency_name,
+                    'emergency_phone' => $request->emergency_phone,
+                ]);
+            }
+        }
 
         return redirect()->route('admin.manage_staff')->with('success', 'Staff member updated successfully!');
     }

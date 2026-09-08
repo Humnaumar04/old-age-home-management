@@ -14,6 +14,7 @@ class EmergencyReport extends Model
         'incident_time',
         'description',
         'action_taken',
+        'status',
         'other_staff_present'
     ];
     public function resident()

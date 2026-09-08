@@ -1,155 +1,166 @@
 @extends('layouts.admin')
 @section('content')
 
-        <!-- Header Section -->
-        <div class="flex justify-between items-center mb-6">
-            <div>
-                <h1 class="text-3xl font-bold text-[#1E4C56] mb-1">Edit Resident</h1>
-                <p class="text-sm text-gray-500">Update the details of {{ $resident->name }}</p>
+<!-- Header Section -->
+<div class="flex justify-between items-center mb-6">
+    <div>
+        <h1 class="text-3xl font-bold text-[#1E4C56] mb-1">Edit Resident</h1>
+        <p class="text-sm text-gray-500">Update the details of {{ $resident->name }}</p>
+    </div>
+    <!-- Back Button -->
+    <a href="{{ route('admin.manage_residents') }}" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-xl font-medium text-sm transition">
+        ← Back
+    </a>
+</div>
+
+<!-- Form Top Banner Container -->
+<div class="max-w-5xl mb-6 bg-[#1E4C56] text-white p-4 rounded-2xl flex items-center space-x-4 shadow-sm">
+    <div class="p-2.5 bg-[#2A6673] rounded-xl text-xl">👤+</div>
+    <div>
+        <h3 class="font-bold text-base">Resident Admission Form</h3>
+        <p class="text-xs text-teal-200">All fields marked with <span class="text-red-400">*</span> are required</p>
+    </div>
+</div>
+
+<!-- Main Form Card -->
+<div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 max-w-5xl">
+    <form action="{{ route('admin.residents.update', $resident->id) }}" method="POST">
+        @csrf
+        @method('PUT')
+        @if ($errors->any())
+        <div class="bg-red-100 border border-red-400 text-red-700 p-4 rounded-xl mb-4 text-xs">
+            <strong>Validation Error:</strong>
+            <ul class="list-disc pl-4 mt-1">
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+        <!-- SECTION 1: PERSONAL INFORMATION -->
+        <div>
+            <h3 class="text-xs font-bold text-[#2A6673] tracking-wider uppercase mb-4 flex items-center space-x-2">
+                <span>👤</span> <span>Personal Information</span>
+            </h3>
+            <hr class="mb-6 border-gray-100">
+
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Full Name <span class="text-red-500">*</span></label>
+                    <input type="text" name="name" value="{{ $resident->name }}" required placeholder="e.g. Muhammad Aslam" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-[#1E4C56] transition bg-gray-50/30">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Age <span class="text-red-500">*</span></label>
+                        <input type="number" name="age" value="{{ $resident->age }}" required placeholder="e.g. 75" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-[#1E4C56] transition bg-gray-50/30">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Gender <span class="text-red-500">*</span></label>
+                        <select name="gender" required class="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#1E4C56] outline-none text-sm bg-white">
+                            <option value="Male" {{ $resident->gender == 'Male' ? 'selected' : '' }}>Male</option>
+                            <option value="Female" {{ $resident->gender == 'Female' ? 'selected' : '' }}>Female</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Room Number <span class="text-red-500">*</span></label>
+                        <input type="text" name="room_number" value="{{ $resident->room_number }}" required placeholder="e.g. A-201" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-[#1E4C56] transition bg-gray-50/30">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Date of Admission <span class="text-red-500">*</span></label>
+                        <input type="date" name="date_of_admission" value="{{ $resident->date_of_admission }}" required class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-[#1E4C56] transition bg-gray-50/30 text-gray-500">
+                    </div>
+                </div>
             </div>
-            <!-- Back Button -->
-            <a href="{{ route('admin.manage_residents') }}" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-xl font-medium text-sm transition">
-                ← Back
+        </div>
+        <div class="mb-4">
+            <label for="family_user_id" class="block text-sm font-medium text-gray-700">Link Family Member Account</label>
+            <select name="family_user_id" id="family_user_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+                <option value="">-- Select Family Member --</option>
+                @foreach($familyUsers as $user)
+                <option value="{{ $user->id }}" {{ $resident->family_user_id == $user->id ? 'selected' : '' }}>
+                    {{ $user->name }} ({{ $user->email }})
+                </option>
+                @endforeach
+            </select>
+        </div>
+
+        <!-- SECTION 2: MEDICAL INFORMATION -->
+        <div>
+            <h3 class="text-xs font-bold text-[#2A6673] tracking-wider uppercase mb-4 flex items-center space-x-2">
+                <span>⚕️</span> <span>Medical Information</span>
+            </h3>
+            <hr class="mb-6 border-gray-100">
+
+            <div class="space-y-6">
+                <!-- Naya Staff Name Field Yahan Add Kiya Hai -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Assigned Staff <span class="text-red-500">*</span></label>
+                    <input type="text" name="doctor_name" value="{{ $resident->doctor_name }}" required placeholder="e.g. Dr. Ahmed Khan" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-[#1E4C56] transition bg-gray-50/30">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Medical Condition <span class="text-red-500">*</span></label>
+                    <select name="medical_condition" required class="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#1E4C56] outline-none text-sm bg-white">
+                        <option value="Stable" {{ $resident->medical_condition == 'Stable' ? 'selected' : '' }}>Stable</option>
+                        <option value="Critical" {{ $resident->medical_condition == 'Critical' ? 'selected' : '' }}>Critical</option>
+                        <option value="Recovering" {{ $resident->medical_condition == 'Recovering' ? 'selected' : '' }}>Recovering</option>
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Blood Pressure (BP) <span class="text-red-500">*</span></label>
+                        <div class="flex items-center space-x-2">
+                            <input type="text" name="bp_systolic" value="{{ $resident->bp_systolic }}" required placeholder="Systolic (e.g. 130)" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-[#1E4C56] transition bg-gray-50/30">
+                            <span class="text-gray-400 font-medium">/</span>
+                            <input type="text" name="bp_diastolic" value="{{ $resident->bp_diastolic }}" required placeholder="Diastolic (e.g. 85)" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-[#1E4C56] transition bg-gray-50/30">
+                            <span class="text-xs text-gray-400 pl-1">mmHg</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Sugar Level <span class="text-red-500">*</span></label>
+                        <div class="flex items-center space-x-2">
+                            <input type="text" name="sugar_level" value="{{ $resident->sugar_level }}" required placeholder="e.g. 6.2" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-[#1E4C56] transition bg-gray-50/30">
+                            <span class="text-xs text-gray-400 whitespace-nowrap">mmol/L</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: EMERGENCY CONTACT -->
+        <div>
+            <h3 class="text-xs font-bold text-[#2A6673] tracking-wider uppercase mb-4 flex items-center space-x-2">
+                <span>📞</span> <span>Emergency Contact</span>
+            </h3>
+            <hr class="mb-6 border-gray-100">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Emergency Contact Name <span class="text-red-500">*</span></label>
+                    <input type="text" name="emergency_contact_name" value="{{ $resident->emergency_contact_name }}" required placeholder="e.g. Fatima Aslam (Daughter)" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-[#1E4C56] transition bg-gray-50/30">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Phone Number <span class="text-red-500">*</span></label>
+                    <input type="text" name="emergency_contact_phone" value="{{ $resident->emergency_contact_phone }}" required placeholder="e.g. 0300-1234567" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-[#1E4C56] transition bg-gray-50/30">
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex space-x-3 pt-4 border-t border-gray-50">
+            <button type="submit" class="bg-[#1E4C56] hover:bg-[#15353d] text-white px-6 py-2.5 rounded-xl font-semibold shadow-sm transition flex items-center space-x-2">
+                <span>✓</span> <span>Update Resident</span>
+            </button>
+            <a href="{{ route('admin.manage_residents') }}" class="bg-gray-100 hover:bg-gray-200 text-gray-600 px-6 py-2.5 rounded-xl font-semibold transition flex items-center justify-center">
+                Cancel
             </a>
         </div>
 
-        <!-- Form Top Banner Container -->
-        <div class="max-w-5xl mb-6 bg-[#1E4C56] text-white p-4 rounded-2xl flex items-center space-x-4 shadow-sm">
-            <div class="p-2.5 bg-[#2A6673] rounded-xl text-xl">👤+</div>
-            <div>
-                <h3 class="font-bold text-base">Resident Admission Form</h3>
-                <p class="text-xs text-teal-200">All fields marked with <span class="text-red-400">*</span> are required</p>
-            </div>
-        </div>
-
-        <!-- Main Form Card -->
-        <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 max-w-5xl">
-            <form action="{{ route('admin.residents.update', $resident->id) }}" method="POST">
-                @csrf
-                @method('PUT')
-                @if ($errors->any())
-                <div class="bg-red-100 border border-red-400 text-red-700 p-4 rounded-xl mb-4 text-xs">
-                    <strong>Validation Error:</strong>
-                    <ul class="list-disc pl-4 mt-1">
-                        @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-                @endif
-                <!-- SECTION 1: PERSONAL INFORMATION -->
-                <div>
-                    <h3 class="text-xs font-bold text-[#2A6673] tracking-wider uppercase mb-4 flex items-center space-x-2">
-                        <span>👤</span> <span>Personal Information</span>
-                    </h3>
-                    <hr class="mb-6 border-gray-100">
-
-                    <div class="space-y-6">
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">Full Name <span class="text-red-500">*</span></label>
-                            <input type="text" name="name" value="{{ $resident->name }}" required placeholder="e.g. Muhammad Aslam" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-[#1E4C56] transition bg-gray-50/30">
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-1">Age <span class="text-red-500">*</span></label>
-                                <input type="number" name="age" value="{{ $resident->age }}" required placeholder="e.g. 75" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-[#1E4C56] transition bg-gray-50/30">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-1">Gender <span class="text-red-500">*</span></label>
-                                <select name="gender" required class="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#1E4C56] outline-none text-sm bg-white">
-                                    <option value="Male" {{ $resident->gender == 'Male' ? 'selected' : '' }}>Male</option>
-                                    <option value="Female" {{ $resident->gender == 'Female' ? 'selected' : '' }}>Female</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-1">Room Number <span class="text-red-500">*</span></label>
-                                <input type="text" name="room_number" value="{{ $resident->room_number }}" required placeholder="e.g. A-201" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-[#1E4C56] transition bg-gray-50/30">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-1">Date of Admission <span class="text-red-500">*</span></label>
-                                <input type="date" name="date_of_admission" value="{{ $resident->date_of_admission }}" required class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-[#1E4C56] transition bg-gray-50/30 text-gray-500">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SECTION 2: MEDICAL INFORMATION -->
-                <div>
-                    <h3 class="text-xs font-bold text-[#2A6673] tracking-wider uppercase mb-4 flex items-center space-x-2">
-                        <span>⚕️</span> <span>Medical Information</span>
-                    </h3>
-                    <hr class="mb-6 border-gray-100">
-
-                    <div class="space-y-6">
-                        <!-- Naya Doctor Name Field Yahan Add Kiya Hai -->
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">Assigned Doctor <span class="text-red-500">*</span></label>
-                            <input type="text" name="doctor_name" value="{{ $resident->doctor_name }}" required placeholder="e.g. Dr. Ahmed Khan" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-[#1E4C56] transition bg-gray-50/30">
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">Medical Condition <span class="text-red-500">*</span></label>
-                            <select name="medical_condition" required class="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#1E4C56] outline-none text-sm bg-white">
-                                <option value="Stable" {{ $resident->medical_condition == 'Stable' ? 'selected' : '' }}>Stable</option>
-                                <option value="Critical" {{ $resident->medical_condition == 'Critical' ? 'selected' : '' }}>Critical</option>
-                                <option value="Recovering" {{ $resident->medical_condition == 'Recovering' ? 'selected' : '' }}>Recovering</option>
-                            </select>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-1">Blood Pressure (BP) <span class="text-red-500">*</span></label>
-                                <div class="flex items-center space-x-2">
-                                    <input type="text" name="bp_systolic" value="{{ $resident->bp_systolic }}" required placeholder="Systolic (e.g. 130)" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-[#1E4C56] transition bg-gray-50/30">
-                                    <span class="text-gray-400 font-medium">/</span>
-                                    <input type="text" name="bp_diastolic" value="{{ $resident->bp_diastolic }}" required placeholder="Diastolic (e.g. 85)" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-[#1E4C56] transition bg-gray-50/30">
-                                    <span class="text-xs text-gray-400 pl-1">mmHg</span>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-1">Sugar Level <span class="text-red-500">*</span></label>
-                                <div class="flex items-center space-x-2">
-                                    <input type="text" name="sugar_level" value="{{ $resident->sugar_level }}" required placeholder="e.g. 6.2" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-[#1E4C56] transition bg-gray-50/30">
-                                    <span class="text-xs text-gray-400 whitespace-nowrap">mmol/L</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SECTION 3: EMERGENCY CONTACT -->
-                <div>
-                    <h3 class="text-xs font-bold text-[#2A6673] tracking-wider uppercase mb-4 flex items-center space-x-2">
-                        <span>📞</span> <span>Emergency Contact</span>
-                    </h3>
-                    <hr class="mb-6 border-gray-100">
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">Emergency Contact Name <span class="text-red-500">*</span></label>
-                            <input type="text" name="emergency_contact_name" value="{{ $resident->emergency_contact_name }}" required placeholder="e.g. Fatima Aslam (Daughter)" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-[#1E4C56] transition bg-gray-50/30">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">Phone Number <span class="text-red-500">*</span></label>
-                            <input type="text" name="emergency_contact_phone" value="{{ $resident->emergency_contact_phone }}" required placeholder="e.g. 0300-1234567" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-[#1E4C56] transition bg-gray-50/30">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="flex space-x-3 pt-4 border-t border-gray-50">
-                    <button type="submit" class="bg-[#1E4C56] hover:bg-[#15353d] text-white px-6 py-2.5 rounded-xl font-semibold shadow-sm transition flex items-center space-x-2">
-                        <span>✓</span> <span>Update Resident</span>
-                    </button>
-                    <a href="{{ route('admin.manage_residents') }}" class="bg-gray-100 hover:bg-gray-200 text-gray-600 px-6 py-2.5 rounded-xl font-semibold transition flex items-center justify-center">
-                        Cancel
-                    </a>
-                </div>
-
-            </form>
-        </div>
+    </form>
+</div>
 @endsection

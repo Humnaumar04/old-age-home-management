@@ -32,24 +32,34 @@ class User extends Authenticatable
         'status',         // Naya add kiya pending approval ke liye
     ];
 
-    // User ka Resident ke sath relationship (One-to-One)
+    // User ka Resident ke sath relationship (family_user_id ke zariye updated)
     public function resident()
     {
-        return $this->hasOne(Resident::class);
+        return $this->hasOne(Resident::class, 'family_user_id');
     }
+
     public function volunteerTasks()
     {
         return $this->hasMany(VolunteerTask::class, 'user_id');
     }
+
     public function family()
     {
         return $this->hasOne(Family::class);
     }
+
     // User ka Donations ke sath relationship (One-to-Many)
     public function donations()
     {
         return $this->hasMany(Donation::class);
     }
+
+    // User ka Messages ke sath relationship (One-to-Many)
+    public function messages()
+    {
+        return $this->hasMany(Message::class, 'user_id');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

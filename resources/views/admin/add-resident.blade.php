@@ -90,6 +90,15 @@
                 </div>
             </div>
         </div>
+        <div class="mb-4">
+            <label for="family_user_id" class="block text-sm font-medium text-gray-700">Link Family Member Account</label>
+            <select name="family_user_id" id="family_user_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+                <option value="">-- Select Family Member --</option>
+                @foreach($familyUsers as $user)
+                <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
+                @endforeach
+            </select>
+        </div>
 
         <!-- SECTION 2: MEDICAL INFORMATION -->
         <div>
@@ -127,7 +136,7 @@
                         </div>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Assigned Doctor Name</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Assigned Staff Name</label>
                         <input type="text" name="doctor_name" placeholder="Enter doctor name" class="w-full rounded-xl border border-gray-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     </div>
                 </div>
