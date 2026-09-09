@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Volunteer;
 use App\Models\VolunteerTask;
 use App\Models\Resident;
+use Carbon\Carbon;
 
 class VolunteerController extends Controller
 {
@@ -43,7 +44,7 @@ class VolunteerController extends Controller
                 }
             })
                 ->where(function ($q) {
-                    // Pending tasks hamesha dikhein, lekin Completed tasks sirf pichlay 24 ghante tak dikhein
+                    // Pending/Expired tasks base date se fetch karein, aur Completed tasks 24 ghante tak dikhein
                     $q->where('status', 'Pending')
                         ->orWhere(function ($subQ) {
                             $subQ->where('status', 'Completed')
@@ -53,7 +54,7 @@ class VolunteerController extends Controller
                 ->get();
         }
 
-        // 4. Residents jinko attention chahiye
+        // 3. Residents jinko attention chahiye
         $attentionResidents = Resident::whereIn('medical_condition', ['Critical', 'Recovering'])->get();
 
         return view('volunteer.dashboard', compact('volunteer', 'tasks', 'attentionResidents'));
@@ -69,26 +70,66 @@ class VolunteerController extends Controller
         // 1. Task ko dhoondhein
         $task = VolunteerTask::findOrFail($id);
 
-        // 2. Status update kar ke save karein (updated_at time bhi automatically update ho jayega)
-        $task->status = 'Completed';
-        $task->save();
+        if ($task->status !== 'Completed') {
+            // 2. Status update kar ke save karein
+            $task->status = 'Completed';
+            $task->save();
 
-        // 3. Agar task ke sath volunteer_id attached hai, tabhi stats update honge
-        if ($task->volunteer_id) {
-            $volunteer = Volunteer::where('id', $task->volunteer_id)->first();
-            if ($volunteer) {
-                $volunteer->increment('tasks_completed');
-                $volunteer->increment('hours_this_month', 1);
-                $volunteer->increment('sessions_attended', 1);
-                $volunteer->increment('residents_helped', 1);
+            // 3. Dynamic Task Duration (Hours) Calculation Logic
+            $hoursToAdd = 1; // Default fallback
+
+            if (!empty($task->time_slot)) {
+                // Check karein agar time_slot string mein range di hui hai (e.g., "12:00 PM - 2:00 PM")
+                if (str_contains($task->time_slot, '-')) {
+                    $parts = explode('-', $task->time_slot);
+                    $startTimeStr = trim($parts[0]);
+                    $endTimeStr = trim(end($parts));
+
+                    try {
+                        $start = Carbon::parse($startTimeStr);
+                        $end = Carbon::parse($endTimeStr);
+
+                        // Midnight crossover handling
+                        if ($end->lt($start)) {
+                            $end->addDay();
+                        }
+
+                        $diffInMinutes = $start->diffInMinutes($end);
+                        $calculatedHours = round($diffInMinutes / 60, 2);
+
+                        if ($calculatedHours > 0) {
+                            $hoursToAdd = $calculatedHours;
+                        }
+                    } catch (\Exception $e) {
+                        $hoursToAdd = 1;
+                    }
+                }
+            } elseif (isset($task->start_time) && isset($task->end_time)) {
+                try {
+                    $start = Carbon::parse($task->start_time);
+                    $end = Carbon::parse($task->end_time);
+                    if ($end->lt($start)) {
+                        $end->addDay();
+                    }
+                    $hoursToAdd = round($start->diffInMinutes($end) / 60, 2);
+                } catch (\Exception $e) {
+                    $hoursToAdd = 1;
+                }
             }
-        } else {
-            // Agar Common Task tha, toh current logged-in volunteer ke stats barha sakte hain
-            $userId = Auth::id();
-            $volunteer = Volunteer::where('user_id', $userId)->first();
+
+            // 4. Relevant Volunteer record fetch kar ke accurate values increment karein
+            $volunteer = null;
+            if ($task->volunteer_id) {
+                $volunteer = Volunteer::where('id', $task->volunteer_id)->first();
+            } else {
+                $volunteer = Volunteer::where('user_id', Auth::id())->first();
+            }
+
             if ($volunteer) {
                 $volunteer->increment('tasks_completed');
-                $volunteer->increment('hours_this_month', 1);
+                $volunteer->increment('hours_this_month', $hoursToAdd);
+                $volunteer->increment('sessions_attended');
+                $volunteer->increment('residents_helped');
             }
         }
 

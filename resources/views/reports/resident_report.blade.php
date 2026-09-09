@@ -3,90 +3,107 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Monthly Resident Report</title>
+    <title>Resident Health & Activity Report</title>
     <style>
         body {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 12px;
             color: #333;
             margin: 0;
-            padding: 20px;
-            font-size: 14px;
+            padding: 10px;
         }
 
         .header {
             text-align: center;
             border-bottom: 2px solid #14434C;
-            padding-bottom: 15px;
-            margin-bottom: 25px;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
         }
 
         .header h1 {
             color: #14434C;
             margin: 0;
             font-size: 22px;
+            text-transform: uppercase;
         }
 
         .header p {
-            color: #666;
-            margin: 5px 0 0;
-            font-size: 12px;
+            color: #555;
+            font-size: 11px;
+            margin-top: 6px;
         }
 
-        .meta-info {
+        .summary-box {
+            width: 100%;
             margin-bottom: 20px;
-            font-size: 13px;
+            background-color: #F8F6F0;
+            border: 1px solid #E2DED0;
+            padding: 10px 15px;
+            border-radius: 6px;
         }
 
-        table {
+        .summary-box td {
+            border: none;
+            padding: 4px;
+            font-size: 11px;
+        }
+
+        table.data-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
         }
 
-        th,
-        td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-        }
-
-        th {
+        table.data-table th {
             background-color: #14434C;
             color: white;
-            font-size: 12px;
+            padding: 8px 10px;
+            text-align: left;
+            font-size: 11px;
             text-transform: uppercase;
         }
 
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
+        table.data-table td {
+            border: 1px solid #E0E0E0;
+            padding: 8px 10px;
+            font-size: 11px;
         }
 
-        td {
-            font-size: 12px;
+        table.data-table tr:nth-child(even) {
+            background-color: #F9F9F9;
         }
 
         .badge-critical {
-            background-color: #ffe4e6;
-            color: #9f1239;
-            padding: 3px 8px;
+            color: #DC2626;
+            background-color: #FEE2E2;
+            padding: 2px 6px;
             border-radius: 4px;
             font-weight: bold;
             font-size: 10px;
         }
 
         .badge-stable {
-            background-color: #d1fae5;
-            color: #065f46;
-            padding: 3px 8px;
+            color: #059669;
+            background-color: #D1FAE5;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 10px;
+        }
+
+        .badge-recovering {
+            color: #D97706;
+            background-color: #FEF3C7;
+            padding: 2px 6px;
             border-radius: 4px;
             font-weight: bold;
             font-size: 10px;
         }
 
         .footer {
-            margin-top: 40px;
+            margin-top: 30px;
             text-align: center;
-            font-size: 11px;
+            font-size: 10px;
             color: #888;
             border-top: 1px solid #eee;
             padding-top: 10px;
@@ -95,54 +112,63 @@
 </head>
 
 <body>
-
-    <!-- Header Section -->
     <div class="header">
-        <h1>Old Age Home Management System</h1>
-        <p>Monthly Resident Health & Activity Report — {{ date('F Y') }}</p>
+        <h1>Monthly Resident Health Report</h1>
+        <p><strong>Report Period:</strong> {{ date('F Y') }}</p>
     </div>
 
-    <!-- Generated Date -->
-    <div class="meta-info">
-        <strong>Generated On:</strong> {{ date('F d, Y') }}
-        <strong>Total Residents:</strong> {{ $residents->count() }}
-    </div>
+    <!-- SUMMARY SECTION -->
+    <table class="summary-box">
+        <tr>
+            <td><strong>Total Active Residents:</strong> {{ $totalResidents ?? $residents->count() }}</td>
+            <td style="text-align: right;"><strong>Critical Attention Needed:</strong> <span style="color: #DC2626; font-weight: bold;">{{ $criticalCount ?? 0 }} Resident(s)</span></td>
+        </tr>
+    </table>
 
-    <!-- Table Data -->
-    <table>
+    <!-- MAIN DATA TABLE -->
+    <table class="data-table">
         <thead>
             <tr>
-                <th>Sr. No.</th>
-                <th>Resident Name</th>
-                <th>Room Number</th>
-                <th>Medical Condition</th>
-                <th>Status</th>
+                <th style="width: 8%;">Sr. No.</th>
+                <th style="width: 32%;">Resident Name</th>
+                <th style="width: 20%;">Room Number</th>
+                <th style="width: 20%;">Medical Condition</th>
+                <th style="width: 20%;">Care Status</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($residents as $index => $resident)
+            @forelse($residents as $index => $resident)
+            @php
+            $cond = $resident->medical_condition ?? 'Stable';
+            @endphp
             <tr>
                 <td>{{ $index + 1 }}</td>
-                <td><strong>{{ $resident->name }}</strong></td>
-                <td>{{ $resident->room_number ?? 'A-101' }}</td>
-                <td>{{ $resident->medical_condition ?? 'Stable' }}</td>
+                <td><strong>{{ ucwords(strtolower($resident->name)) }}</strong></td>
+                <td>{{ $resident->room_number ?? 'N/A' }}</td>
                 <td>
-                    @if(($resident->medical_condition ?? '') == 'Critical')
-                    <span class="badge-critical">Critical</span>
+                    @if(strtolower($cond) == 'critical')
+                    <span class="badge-critical">Critical Attention</span>
+                    @elseif(strtolower($cond) == 'recovering')
+                    <span class="badge-recovering">Recovering</span>
                     @else
-                    <span class="badge-stable">Stable / Recovering</span>
+                    <span class="badge-stable">Stable Condition</span>
                     @endif
                 </td>
+                <td>
+                    <span style="color: #059669; font-weight: bold;">Active Resident</span>
+                </td>
             </tr>
-            @endforeach
+            @empty
+            <tr>
+                <td colspan="5" style="text-align: center; color: #888; padding: 15px;">No resident records found.</td>
+            </tr>
+            @endforelse
         </tbody>
     </table>
 
-    <!-- Footer -->
     <div class="footer">
-        <p>Confidential System Generated Report — Old Age Home Management System</p>
+        Confidential System Generated Report — Old Age Home Management System | Generated On: {{ date('F d, Y') }}
     </div>
-
 </body>
 
 </html>

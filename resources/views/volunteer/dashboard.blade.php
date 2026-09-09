@@ -49,20 +49,52 @@
             <h3 class="text-lg font-bold text-[#14434C]">Task List — {{ date('F d, Y') }}</h3>
 
             <div class="space-y-3">
-                @foreach($tasks as $task)
+                @forelse($tasks as $task)
                 @php
                 $isCompleted = ($task->status ?? 'Pending') == 'Completed';
-                // Check karein ke task ke title mein (Common) likha hai ya nahi
                 $isCommon = str_contains($task->title, '(Common)');
+
+                // Task Date calculation
+                $taskDate = isset($task->date) ? \Carbon\Carbon::parse($task->date) : \Carbon\Carbon::today();
+
+                // Extract End Time from time_slot string (e.g., "12:00 PM - 1:00 PM")
+                $timeSlot = $task->time_slot ?? '9:00 AM';
+                if (str_contains($timeSlot, '-')) {
+                $parts = explode('-', $timeSlot);
+                $endTimeStr = trim(end($parts));
+                } else {
+                $endTimeStr = trim($timeSlot);
+                }
+
+                try {
+                $taskEndTime = \Carbon\Carbon::parse($taskDate->format('Y-m-d') . ' ' . $endTimeStr);
+                } catch (\Exception $e) {
+                $taskEndTime = $taskDate->copy()->endOfDay();
+                }
+
+                $now = \Carbon\Carbon::now();
+                $isExpired = !$isCompleted && $now->gt($taskEndTime);
+                $hideThreshold = $taskEndTime->copy()->addHours(24);
+                $shouldHide = $now->gt($hideThreshold);
                 @endphp
-                <div class="p-4 rounded-xl border {{ $isCompleted ? 'border-emerald-100 bg-emerald-50/40' : 'border-gray-200 bg-white' }} flex items-center justify-between">
+
+                @if(!$shouldHide)
+                <div class="p-4 rounded-xl border {{ $isCompleted ? 'border-emerald-100 bg-emerald-50/40' : ($isExpired ? 'border-rose-100 bg-rose-50/30' : 'border-gray-200 bg-white') }} flex items-center justify-between transition">
                     <div class="flex items-center space-x-3">
-                        <span class="{{ $isCompleted ? 'text-emerald-600' : 'text-gray-400' }} text-lg">
-                            {!! $isCompleted ? '✅' : '⭕' !!}
+                        <span class="{{ $isCompleted ? 'text-emerald-600' : ($isExpired ? 'text-rose-500' : 'text-gray-400') }} text-lg">
+                            @if($isCompleted)
+                            ✅
+                            @elseif($isExpired)
+                            ❌
+                            @else
+                            ⭕
+                            @endif
                         </span>
                         <div>
                             <div class="flex items-center space-x-2">
-                                <p class="text-sm font-semibold text-gray-800 {{ $isCompleted ? 'line-through text-gray-400' : '' }}">{{ $task->title }}</p>
+                                <p class="text-sm font-semibold {{ $isCompleted ? 'line-through text-gray-400' : ($isExpired ? 'text-gray-600' : 'text-gray-800') }}">
+                                    {{ $task->title }}
+                                </p>
 
                                 <!-- Common Task vs Personal Task Badge -->
                                 @if($isCommon)
@@ -75,21 +107,30 @@
                         </div>
                     </div>
 
-                    <!-- Mark Done Action Button for Database Tasks -->
-                    @if(isset($task->id) && !$isCompleted)
-                    <form action="{{ route('volunteer.completeTask', $task->id) }}" method="POST">
-                        @csrf
-                        <button type="submit" class="px-3 py-1.5 bg-[#1E4C56] hover:bg-[#163a42] text-white text-xs font-semibold rounded-lg transition shadow-xs cursor-pointer">
-                            Mark Done
-                        </button>
-                    </form>
-                    @elseif($isCompleted)
-                    <span class="px-2.5 py-1 text-xs font-bold rounded-full bg-emerald-100 text-emerald-700">
-                        Done
-                    </span>
-                    @endif
+                    <!-- Action Buttons / Badges -->
+                    <div>
+                        @if($isCompleted)
+                        <span class="px-2.5 py-1 text-xs font-bold rounded-full bg-emerald-100 text-emerald-700">
+                            Done ✓
+                        </span>
+                        @elseif($isExpired)
+                        <span class="px-2.5 py-1 text-xs font-bold rounded-full bg-rose-100 text-rose-700">
+                            Expired
+                        </span>
+                        @elseif(isset($task->id))
+                        <form action="{{ route('volunteer.completeTask', $task->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="px-3 py-1.5 bg-[#1E4C56] hover:bg-[#163a42] text-white text-xs font-semibold rounded-lg transition shadow-xs cursor-pointer">
+                                Mark Done
+                            </button>
+                        </form>
+                        @endif
+                    </div>
                 </div>
-                @endforeach
+                @endif
+                @empty
+                <p class="text-sm text-gray-500 text-center py-4">No tasks scheduled for today.</p>
+                @endforelse
             </div>
         </div>
 

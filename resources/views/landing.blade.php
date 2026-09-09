@@ -39,9 +39,9 @@
         <!-- Navigation Links -->
         <nav class="hidden md:flex space-x-8 font-medium text-gray-600">
             <a href="#" class="text-[#1E3E3F] font-semibold">Home</a>
-            <a href="#features" class="hover:text-[#1E3E3F] transition">About Us</a> <a href="#features" class="hover:text-[#1E3E3F] transition">Features</a>
-            <a href="#urgent-needs" class="hover:text-[#1E3E3F] transition">View Needs</a>
+            <a href="#features" class="hover:text-[#1E3E3F] transition">Features</a>
             <a href="#urgent-needs" class="hover:text-[#1E3E3F] transition">Donate</a>
+            <a href="#volunteer" class="hover:text-[#1E3E3F] transition">Volunteer</a>
             <a href="#contact" class="hover:text-[#1E3E3F] transition">Contact Us</a>
         </nav>
 
@@ -54,7 +54,7 @@
     </header>
 
     <!-- 2. HERO SECTION -->
-    <section class="max-w-7xl mx-auto px-6 pt-12 pb-20 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+    <section class="max-w-7xl mx-auto px-6 pt-12 pb-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <!-- Left Side content -->
         <div class="space-y-6">
             <div class="inline-block bg-[#E8ECE9] text-[#1E3E3F] text-xs font-semibold px-3 py-1 rounded-full tracking-wider uppercase">
@@ -82,23 +82,21 @@
 
             <!-- Trusted Badges -->
             <div class="flex items-center space-x-3 pt-6">
-                <div class="flex -space-x-3">
-                    <img class="w-10 h-10 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100" alt="user">
-                    <img class="w-10 h-10 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100" alt="user">
-                    <img class="w-10 h-10 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" alt="user">
+                <div class="bg-[#E8ECE9] p-2.5 rounded-full text-[#1E3E3F]">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
+                    </svg>
                 </div>
                 <div>
-                    <p class="text-sm font-bold text-[#1E3E3F]">Trusted by 50+ Residents</p>
-                    <p class="text-xs text-gray-500">& their families across the region</p>
+                    <p class="text-sm font-bold text-[#1E3E3F]">Caring for our residents</p>
+                    <p class="text-xs text-gray-500">and connecting them with their families</p>
                 </div>
             </div>
         </div>
-
         <!-- Right Side Image with Local Asset Path -->
         <div class="relative">
             <!-- Main Image Frame -->
             <div class="rounded-[2.5rem] overflow-hidden shadow-2xl">
-                <!-- Aapki Local Image public/images/elderly-care.jpg se link kar di hai -->
                 <img src="{{ asset('images/elderly-care.jpg') }}" alt="Elderly Care" class="w-full h-[500px] object-cover">
             </div>
 
@@ -106,7 +104,7 @@
             <div class="absolute -top-6 -right-4 bg-white/95 backdrop-blur px-5 py-3 rounded-2xl shadow-xl flex items-center space-x-3 border border-gray-100">
                 <div class="bg-orange-50 p-2 rounded-xl text-orange-600">❤️</div>
                 <div>
-                    <span class="block font-bold text-sm text-[#1E3E3F]">100+ Donations</span>
+                    <span class="block font-bold text-sm text-[#1E3E3F]">Community Donations</span>
                     <span class="block text-xs text-gray-400">community-driven care</span>
                 </div>
             </div>
@@ -116,32 +114,12 @@
                 <div class="bg-blue-50 p-2 rounded-xl text-blue-600">🛡️</div>
                 <div>
                     <span class="block font-bold text-sm text-[#1E3E3F]">Safe & Monitored</span>
-                    <span class="block text-xs text-gray-400">24/7 staff presence</span>
+                    <span class="block text-xs text-gray-400">Dedicated staff on-site</span>
                 </div>
             </div>
         </div>
     </section>
-    <section class="bg-[#1E3E3F] text-white py-12 px-6">
-        <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div class="space-y-2">
-                <span class="text-4xl font-extrabold block text-[#A3B899]">50+</span>
-                <span class="text-sm text-gray-300 font-medium tracking-wide uppercase">Happy Residents</span>
-            </div>
-            <div class="space-y-2">
-                <span class="text-4xl font-extrabold block text-[#A3B899]">10+</span>
-                <span class="text-sm text-gray-300 font-medium tracking-wide uppercase">Dedicated Staff</span>
-            </div>
-            <div class="space-y-2">
-                <span class="text-4xl font-extrabold block text-[#A3B899]">100+</span>
-                <span class="text-sm text-gray-300 font-medium tracking-wide uppercase">Total Donations</span>
-            </div>
-            <div class="space-y-2">
-                <span class="text-4xl font-extrabold block text-[#A3B899]">Active</span>
-                <span class="text-sm text-gray-300 font-medium tracking-wide uppercase">Volunteer Support</span>
-            </div>
-        </div>
-    </section>
-
+    
     <section id="features" class="max-w-7xl mx-auto px-6 py-20">
         <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
             <span class="text-[#1E3E3F] font-bold text-sm tracking-widest uppercase bg-[#E8ECE9] px-3 py-1 rounded-full">• Our Services</span>
@@ -154,22 +132,22 @@
             <div class="bg-white rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-xl transition group duration-300 overflow-hidden flex flex-col justify-between">
                 <div>
                     <div class="overflow-hidden h-52 w-full relative">
-                        <img src="{{ asset('images/service-1.jpg') }}" alt="Dedicated Care" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <img src="{{ asset('images/service-1.jpg') }}" alt="Dedicated Care" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy">
                         <div class="absolute top-4 left-4 bg-[#1E3E3F] text-white p-2.5 rounded-xl text-lg shadow-md">👥</div>
                     </div>
                     <div class="p-8 pb-4">
                         <h3 class="text-xl font-bold text-[#1E3E3F] mb-3">Dedicated Care & Staff Management</h3>
                         <p class="text-gray-600 text-sm leading-relaxed">
-                            Track daily resident activities, health vitals, and schedules. Our staff portal ensures every shift is documented, every need is noted.
+                            Track daily resident activities and health records. Our staff portal ensures every reading is logged and every emergency is reported to the admin right away.
                         </p>
                     </div>
                 </div>
                 <div class="px-8 pb-8 pt-2">
                     <ul class="space-y-2 text-xs font-medium text-gray-500">
-                        <li class="flex items-center space-x-2"><span class="text-green-600">✓</span> <span>Real-time health monitoring</span></li>
+                        <li class="flex items-center space-x-2"><span class="text-green-600">✓</span> <span>Resident health record tracking</span></li>
                         <li class="flex items-center space-x-2"><span class="text-green-600">✓</span> <span>Daily activity logs</span></li>
-                        <li class="flex items-center space-x-2"><span class="text-green-600">✓</span> <span>Emergency alert system</span></li>
-                        <li class="flex items-center space-x-2"><span class="text-green-600">✓</span> <span>Shift management & attendance</span></li>
+                        <li class="flex items-center space-x-2"><span class="text-green-600">✓</span> <span>Emergency reporting to admin</span></li>
+                        <li class="flex items-center space-x-2"><span class="text-green-600">✓</span> <span>Staff records management</span></li>
                     </ul>
                 </div>
             </div>
@@ -177,13 +155,13 @@
             <div class="bg-white rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-xl transition group duration-300 overflow-hidden flex flex-col justify-between">
                 <div>
                     <div class="overflow-hidden h-52 w-full relative">
-                        <img src="{{ asset('images/service-2.jpg') }}" alt="Transparent Donations" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <img src="{{ asset('images/service-2.jpg') }}" alt="Transparent Donations" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy">
                         <div class="absolute top-4 left-4 bg-orange-600 text-white p-2.5 rounded-xl text-lg shadow-md">🎁</div>
                     </div>
                     <div class="p-8 pb-4">
                         <h3 class="text-xl font-bold text-[#1E3E3F] mb-3">Transparent Donations Tracking</h3>
                         <p class="text-gray-600 text-sm leading-relaxed">
-                            Every contribution — whether food, clothes, medicine, or funds — is logged and visible. Donors can track exactly how their generosity makes an impact.
+                            Every contribution — whether food, clothes, medicine, or funds — is logged and reviewed by our team, with donors able to see the current needs before giving.
                         </p>
                     </div>
                 </div>
@@ -192,7 +170,7 @@
                         <li class="flex items-center space-x-2"><span class="text-green-600">✓</span> <span>Food & grocery donations</span></li>
                         <li class="flex items-center space-x-2"><span class="text-green-600">✓</span> <span>Clothing collections</span></li>
                         <li class="flex items-center space-x-2"><span class="text-green-600">✓</span> <span>Medical supply tracking</span></li>
-                        <li class="flex items-center space-x-2"><span class="text-green-600">✓</span> <span>Monetary fund management</span></li>
+                        <li class="flex items-center space-x-2"><span class="text-green-600">✓</span> <span>Monetary fund donations</span></li>
                     </ul>
                 </div>
             </div>
@@ -200,22 +178,21 @@
             <div class="bg-white rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-xl transition group duration-300 overflow-hidden flex flex-col justify-between">
                 <div>
                     <div class="overflow-hidden h-52 w-full relative">
-                        <img src="{{ asset('images/service-3.jpg') }}" alt="Seamless Family Connection" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <img src="{{ asset('images/service-3.jpg') }}" alt="Seamless Family Connection" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy">
                         <div class="absolute top-4 left-4 bg-blue-600 text-white p-2.5 rounded-xl text-lg shadow-md">💬</div>
                     </div>
                     <div class="p-8 pb-4">
                         <h3 class="text-xl font-bold text-[#1E3E3F] mb-3">Seamless Family Connection</h3>
                         <p class="text-gray-600 text-sm leading-relaxed">
-                            Families stay close through our portal — view your relative's daily health updates, communicate with the care team, and make contributions directly.
+                            Families stay close through our portal — view your relative's room and health status, and message our admin team directly whenever you have a question.
                         </p>
                     </div>
                 </div>
                 <div class="px-8 pb-8 pt-2">
                     <ul class="space-y-2 text-xs font-medium text-gray-500">
-                        <li class="flex items-center space-x-2"><span class="text-green-600">✓</span> <span>Live health & activity view</span></li>
-                        <li class="flex items-center space-x-2"><span class="text-green-600">✓</span> <span>Secure messaging with staff</span></li>
-                        <li class="flex items-center space-x-2"><span class="text-green-600">✓</span> <span>Family donation portal</span></li>
-                        <li class="flex items-center space-x-2"><span class="text-green-600">✓</span> <span>Visiting hour scheduling</span></li>
+                        <li class="flex items-center space-x-2"><span class="text-green-600">✓</span> <span>View resident room & health status</span></li>
+                        <li class="flex items-center space-x-2"><span class="text-green-600">✓</span> <span>Direct messaging with the admin team</span></li>
+                        <li class="flex items-center space-x-2"><span class="text-green-600">✓</span> <span>Simple, private family login</span></li>
                     </ul>
                 </div>
             </div>
@@ -301,7 +278,7 @@
                 </div>
             </div>
             <div class="h-full min-h-[400px] lg:min-h-[550px] relative">
-                <img src="{{ asset('images/volunteer-care.jpg') }}" alt="Volunteer Support" class="w-full h-full object-cover">
+                <img src="{{ asset('images/volunteer-care.jpg') }}" alt="Volunteer Support" class="w-full h-full object-cover" loading="lazy">
                 <div class="absolute bottom-10 left-10 bg-white p-4 rounded-2xl shadow-lg border border-gray-100 flex items-center space-x-3 text-[#1E3E3F]">
                     <div class="bg-blue-50 p-2 rounded-lg text-blue-600">⭐</div>
                     <div>
@@ -328,9 +305,9 @@
             <div>
                 <h4 class="text-white font-bold text-sm mb-4 tracking-wider uppercase">Quick Links</h4>
                 <ul class="space-y-2 text-sm">
-                    <li><a href="#" class="hover:text-white transition">About System</a></li>
-                    <li><a href="#" class="hover:text-white transition">Active Needs</a></li>
-                    <li><a href="#" class="hover:text-white transition">Volunteer Program</a></li>
+                    <li><a href="#features" class="hover:text-white transition">About System</a></li>
+                    <li><a href="#urgent-needs" class="hover:text-white transition">Active Needs</a></li>
+                    <li><a href="#volunteer" class="hover:text-white transition">Volunteer Program</a></li>
                 </ul>
             </div>
 
@@ -338,7 +315,7 @@
                 <h4 class="text-white font-bold text-sm mb-4 tracking-wider uppercase">Support</h4>
                 <ul class="space-y-2 text-sm">
                     <li><a href="{{ route('login') }}" class="hover:text-white transition">Admin Login</a></li>
-                    <li><a href="#" class="hover:text-white transition">Contact Support</a></li>
+                    <li><a href="{{ route('register') }}" class="hover:text-white transition">Register</a></li>
                 </ul>
             </div>
 
@@ -354,9 +331,6 @@
         </div>
     </footer>
 
-</body>
-
-</html>
 </body>
 
 </html>

@@ -72,6 +72,7 @@
                         <option value="Pending" {{ $donation->status == 'Pending' ? 'selected' : '' }}>Pending</option>
                         <option value="Approved" {{ $donation->status == 'Approved' ? 'selected' : '' }}>Approved</option>
                         <option value="Rejected" {{ $donation->status == 'Rejected' ? 'selected' : '' }}>Rejected</option>
+                        <option value="Rejected" {{ $donation->status == 'Completed' ? 'selected' : '' }}>Completed</option>
                     </select>
                 </div>
 
