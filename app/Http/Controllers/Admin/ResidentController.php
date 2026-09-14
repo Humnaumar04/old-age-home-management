@@ -19,8 +19,8 @@ class ResidentController extends Controller
 
     public function create()
     {
-        // Family users ki list fetch karein taake dropdown mein show ho sakein
-        $familyUsers = User::all();
+        // Sirf family role wale users ki list fetch karein
+        $familyUsers = User::where('role', 'family')->get();
         return view('admin.add-resident', compact('familyUsers'));
     }
 
@@ -53,7 +53,6 @@ class ResidentController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => 'resident',
-            'status' => 'approved',
         ]);
 
         // 3. Resident table mein record save karna
@@ -80,7 +79,8 @@ class ResidentController extends Controller
     public function edit($id)
     {
         $resident = Resident::findOrFail($id);
-        $familyUsers = User::all(); // Family users list for edit view dropdown
+        // Sirf family role wale users ki list edit view ke liye fetch karein
+        $familyUsers = User::where('role', 'family')->get();
         return view('admin.edit-resident', compact('resident', 'familyUsers'));
     }
 

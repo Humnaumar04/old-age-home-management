@@ -5,48 +5,56 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Models\Volunteer; // <-- Yeh line yahan add karni hai
+use App\Models\User;
+use App\Models\Resident;
+use App\Models\Staff;
+use App\Models\Volunteer;
 
 class AuthController extends Controller
 {
-    // 1. Login Screen dikhane ke liye
+    // 1. Login Screen dikhane ke liye (Teeno Models se dynamic counts)
     public function showLogin()
     {
-        return view('auth.login'); // auth/login.blade.php file khulegi
+        // Teeno dedicated models se direct counting
+        $residentsCount = Resident::count();
+        $staffCount = Staff::count();
+        $volunteersCount = Volunteer::count();
+
+        return view('auth.login', compact('residentsCount', 'staffCount', 'volunteersCount'));
     }
 
-    // 2. Login Logic (Asal Kaam)
+    // 2. Login Logic
     public function login(Request $request)
     {
-        // Inputs ko validate karna ke email aur password khali na hon
+        // Inputs ko validate karna
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
-            'role' => 'required' // Figma screen se jo role select hoga
+            'role' => 'required'
         ]);
 
-        // Check karna ke kya email aur password database se match hote hain
+        // Check credentials in DB
         if (Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password']])) {
 
             $user = Auth::user();
 
-            // Ek extra check: Case-insensitive check taake 'Staff' aur 'staff' ka rola na ho
+            // Case-insensitive role check
             if (strtolower($user->role) !== strtolower($request->role)) {
                 Auth::logout();
-                return back()->withErrors(['email' => 'Selected role does not match our records.']);
+                return back()->withErrors(['email' => 'Selected role does not match our records.'])->withInput($request->only('role'));
             }
-            // Naya check: agar account abhi approve nahi hua
+
+            // Status check
             if (strtolower($user->status) !== 'approved') {
                 Auth::logout();
-                return back()->withErrors(['email' => 'Your account is still pending Admin approval.']);
+                return back()->withErrors(['email' => 'Your account is still pending Admin approval.'])->withInput($request->only('role'));
             }
 
             $request->session()->regenerate();
 
-            // Role ko lowercase karlein taake switch case match ho jaye
             $userRole = strtolower($user->role);
 
-            // --- ROLE BASED REDIRECTION (Asal Logic Fixed) ---
+            // ROLE BASED REDIRECTION
             switch ($userRole) {
                 case 'admin':
                     return redirect()->route('admin.dashboard');
@@ -69,7 +77,7 @@ class AuthController extends Controller
         // Agar password ya email galat ho
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
-        ]);
+        ])->withInput($request->only('role'));
     }
 
     // 3. Logout Logic
@@ -84,13 +92,12 @@ class AuthController extends Controller
     // 4. Register Screen dikhane ke liye
     public function showRegister()
     {
-        return view('auth.register'); // auth/register.blade.php file khulegi
+        return view('auth.register');
     }
 
-    // 5. Register Logic (Naya User Database mein Save karne ke liye)
+    // 5. Register Logic
     public function registerSubmit(Request $request)
     {
-        // 1. Inputs ko validate karna
         $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -100,8 +107,7 @@ class AuthController extends Controller
             'relative_name' => 'required_if:type,Family',
         ]);
 
-        // 2. Database (users table) mein data save karna aur variable mein store karna
-        $user = \App\Models\User::create([
+        $user = User::create([
             'name' => $request->first_name . ' ' . $request->last_name,
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
@@ -111,11 +117,10 @@ class AuthController extends Controller
             'address' => $request->address,
             'relative_name' => $request->relative_name,
             'password' => Hash::make($request->password),
-            'role' => strtolower($request->type), // donor, family, volunteer
+            'role' => strtolower($request->type),
             'status' => 'pending',
         ]);
 
-        // 3. AGAR USER VOLUNTEER HUA TOH AUTOMATIC VOLUNTEER TABLE MEIN BHI ENTRY BANA DEIN
         if (strtolower($request->type) === 'volunteer') {
             Volunteer::create([
                 'user_id' => $user->id,
@@ -127,7 +132,6 @@ class AuthController extends Controller
             ]);
         }
 
-        // 4. Wapas bhej kar success message dikhana
         return redirect()->back()->with('success', 'Your registration request has been submitted! Waiting for Admin approval.');
     }
 }

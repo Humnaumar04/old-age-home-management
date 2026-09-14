@@ -36,6 +36,7 @@
             </ul>
         </div>
         @endif
+
         <!-- SECTION 1: PERSONAL INFORMATION -->
         <div>
             <h3 class="text-xs font-bold text-[#2A6673] tracking-wider uppercase mb-4 flex items-center space-x-2">
@@ -49,7 +50,7 @@
                     <input type="text" name="name" required placeholder="e.g. Muhammad Aslam" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-[#1E4C56] transition bg-gray-50/30">
                 </div>
 
-                <!-- NYE FIELDS: LOGIN CREDENTIALS -->
+                <!-- LOGIN CREDENTIALS -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1">Email <span class="text-red-500">*</span></label>
@@ -60,7 +61,6 @@
                         <input type="password" name="password" required placeholder="****" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-[#1E4C56] transition bg-gray-50/30">
                     </div>
                 </div>
-                <!-- END OF NEW FIELDS -->
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
@@ -88,16 +88,18 @@
                         <input type="date" name="date_of_admission" required class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-[#1E4C56] transition bg-gray-50/30 text-gray-500">
                     </div>
                 </div>
+
+                <!-- LINK FAMILY MEMBER ACCOUNT (Updated Styling) -->
+                <div>
+                    <label for="family_user_id" class="block text-sm font-semibold text-gray-700 mb-1">Link Family Member Account</label>
+                    <select name="family_user_id" id="family_user_id" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-[#1E4C56] transition bg-gray-50/30 text-gray-700">
+                        <option value="">-- Select Family Member --</option>
+                        @foreach($familyUsers as $user)
+                        <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
-        </div>
-        <div class="mb-4">
-            <label for="family_user_id" class="block text-sm font-medium text-gray-700">Link Family Member Account</label>
-            <select name="family_user_id" id="family_user_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
-                <option value="">-- Select Family Member --</option>
-                @foreach($familyUsers as $user)
-                <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
-                @endforeach
-            </select>
         </div>
 
         <!-- SECTION 2: MEDICAL INFORMATION -->
@@ -135,10 +137,11 @@
                             <span class="text-xs text-gray-400 whitespace-nowrap">mmol/L</span>
                         </div>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Assigned Staff Name</label>
-                        <input type="text" name="doctor_name" placeholder="Enter doctor name" class="w-full rounded-xl border border-gray-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Assigned Staff Name</label>
+                    <input type="text" name="doctor_name" placeholder="Enter doctor name" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-[#1E4C56] transition bg-gray-50/30">
                 </div>
             </div>
         </div>

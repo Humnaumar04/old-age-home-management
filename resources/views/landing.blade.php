@@ -54,7 +54,7 @@
     </header>
 
     <!-- 2. HERO SECTION -->
-    <section class="max-w-7xl mx-auto px-6 pt-12 pb-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+    <section class="max-w-7xl mx-auto px-6 pt-12 pb-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <!-- Left Side content -->
         <div class="space-y-6">
             <div class="inline-block bg-[#E8ECE9] text-[#1E3E3F] text-xs font-semibold px-3 py-1 rounded-full tracking-wider uppercase">
@@ -80,7 +80,7 @@
                 </a>
             </div>
 
-            <!-- Trusted Badges -->
+            <!-- Trusted Badge -->
             <div class="flex items-center space-x-3 pt-6">
                 <div class="bg-[#E8ECE9] p-2.5 rounded-full text-[#1E3E3F]">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
@@ -93,14 +93,13 @@
                 </div>
             </div>
         </div>
-        <!-- Right Side Image with Local Asset Path -->
+
+        <!-- Right Side Image -->
         <div class="relative">
-            <!-- Main Image Frame -->
             <div class="rounded-[2.5rem] overflow-hidden shadow-2xl">
                 <img src="{{ asset('images/elderly-care.jpg') }}" alt="Elderly Care" class="w-full h-[500px] object-cover">
             </div>
 
-            <!-- Floating Badge 1 (Top Right) -->
             <div class="absolute -top-6 -right-4 bg-white/95 backdrop-blur px-5 py-3 rounded-2xl shadow-xl flex items-center space-x-3 border border-gray-100">
                 <div class="bg-orange-50 p-2 rounded-xl text-orange-600">❤️</div>
                 <div>
@@ -109,7 +108,6 @@
                 </div>
             </div>
 
-            <!-- Floating Badge 2 (Bottom Left) -->
             <div class="absolute -bottom-6 -left-6 bg-white/95 backdrop-blur px-5 py-3 rounded-2xl shadow-xl flex items-center space-x-3 border border-gray-100">
                 <div class="bg-blue-50 p-2 rounded-xl text-blue-600">🛡️</div>
                 <div>
@@ -119,7 +117,7 @@
             </div>
         </div>
     </section>
-    
+
     <section id="features" class="max-w-7xl mx-auto px-6 py-20">
         <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
             <span class="text-[#1E3E3F] font-bold text-sm tracking-widest uppercase bg-[#E8ECE9] px-3 py-1 rounded-full">• Our Services</span>
@@ -290,7 +288,43 @@
         </div>
     </section>
 
-    <footer id="contact" class="bg-[#152C2D] text-gray-400 pt-16 pb-8 px-6">
+    <!-- CONTACT US SECTION -->
+    <section id="contact" class="max-w-7xl mx-auto px-6 py-20">
+        <div class="text-center max-w-2xl mx-auto mb-14 space-y-3">
+            <span class="text-[#1E3E3F] font-bold text-sm tracking-widest uppercase bg-[#E8ECE9] px-3 py-1 rounded-full">• Get in Touch</span>
+            <h2 class="text-3xl md:text-4xl font-bold text-[#1E3E3F]">Contact Us</h2>
+            <p class="text-gray-500">Have a question about the system or want to know more about this project? Reach out anytime.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <a href="mailto:humnaumar@gmail.com" class="bg-white rounded-[1.75rem] border border-gray-100 shadow-sm hover:shadow-xl transition duration-300 p-8 flex flex-col items-center text-center space-y-4">
+                <div class="bg-[#E8ECE9] text-[#1E3E3F] w-14 h-14 rounded-2xl flex items-center justify-center text-2xl">📧</div>
+                <div>
+                    <h4 class="font-bold text-[#1E3E3F] mb-1">Email Us</h4>
+                    <p class="text-sm text-gray-500">humnaumar04@gmail.com</p>
+                    <p class="text-sm text-gray-500">maryamtariqq2003@gmail.com</p>
+                </div>
+            </a>
+
+            <div class="bg-white rounded-[1.75rem] border border-gray-100 shadow-sm hover:shadow-xl transition duration-300 p-8 flex flex-col items-center text-center space-y-4">
+                <div class="bg-orange-50 text-orange-600 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl">📍</div>
+                <div>
+                    <h4 class="font-bold text-[#1E3E3F] mb-1">Our Institution</h4>
+                    <p class="text-sm text-gray-500">Govt. Graduate College, Civil Lines, Sheikhupura</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-[1.75rem] border border-gray-100 shadow-sm hover:shadow-xl transition duration-300 p-8 flex flex-col items-center text-center space-y-4">
+                <div class="bg-blue-50 text-blue-600 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl">🎓</div>
+                <div>
+                    <h4 class="font-bold text-[#1E3E3F] mb-1">About This Project</h4>
+                    <p class="text-sm text-gray-500">A Final Year Project built by BS(IT) students</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-[#152C2D] text-gray-400 pt-16 pb-8 px-6">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
             <div class="space-y-4">
                 <div class="flex items-center space-x-3 text-white font-bold text-lg">
@@ -320,9 +354,12 @@
             </div>
 
             <div>
-                <h4 class="text-white font-bold text-sm mb-4 tracking-wider uppercase">Contact Center</h4>
+                <h4 class="text-white font-bold text-sm mb-4 tracking-wider uppercase">Contact</h4>
                 <p class="text-sm">📍 Sector 5-H, Pakistan</p>
-                <p class="text-sm mt-2">Have questions about the system? Reach out to our management desk anytime.</p>
+                <p class="text-sm mt-2">
+                    <a href="mailto:humnaumar@gmail.com" class="hover:text-white transition">humnaumar04@gmail.com</a>
+                    <a href="mailto:humnaumar@gmail.com" class="hover:text-white transition">maryamtariqq2003@gmail.com</a>
+                </p>
             </div>
         </div>
 

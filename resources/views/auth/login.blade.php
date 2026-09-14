@@ -3,6 +3,7 @@
 @section('content')
 <div class="flex h-screen w-full">
 
+    {{-- Left Side Info Panel --}}
     <div class="hidden md:flex md:w-5/12 bg-[#1C4E55] p-12 flex-col justify-between text-white">
         <div>
             <div class="flex items-center gap-2 mb-2">
@@ -14,28 +15,31 @@
             <p class="text-sm opacity-70 mt-6 max-w-sm">A unified management platform for residents, staff, families, donors, and volunteers — bringing everyone closer to those who need care.</p>
         </div>
 
+        {{-- Dynamic Database Counts Section --}}
         <div class="grid grid-cols-3 gap-4 bg-[#163E44] p-4 rounded-xl border border-teal-800">
             <div>
-                <h3 class="text-xl font-bold">47</h3>
+                <h3 class="text-xl font-bold">{{ $residentsCount ?? 0 }}</h3>
                 <p class="text-[10px] opacity-60">Residents</p>
             </div>
             <div>
-                <h3 class="text-xl font-bold">12</h3>
+                <h3 class="text-xl font-bold">{{ $staffCount ?? 0 }}</h3>
                 <p class="text-[10px] opacity-60">Staff Members</p>
             </div>
             <div>
-                <h3 class="text-xl font-bold">23</h3>
+                <h3 class="text-xl font-bold">{{ $volunteersCount ?? 0 }}</h3>
                 <p class="text-[10px] opacity-60">Volunteers</p>
             </div>
         </div>
     </div>
 
+    {{-- Right Side Login Form --}}
     <div class="w-full md:w-7/12 flex flex-col justify-center px-8 sm:px-16 lg:px-24 py-8">
         <a href="{{ route('landing') }}" class="text-xs text-gray-500 hover:text-gray-800 mb-6 flex items-center gap-1">← Back to Home</a>
 
         <h2 class="text-3xl font-serif font-bold text-[#1C4E55]">Welcome!</h2>
         <p class="text-sm text-gray-600 mt-1 mb-8">Sign in to your account to continue</p>
 
+        {{-- Error Message Alert --}}
         @if ($errors->any())
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded mb-4 text-sm">
             {{ $errors->first() }}
@@ -45,22 +49,26 @@
         <form action="{{ route('login.submit') }}" method="POST" class="space-y-5">
             @csrf
 
+            @php $selectedRole = old('role', 'admin'); @endphp
+            <input type="hidden" name="role" id="selected_role" value="{{ $selectedRole }}">
+
             <div>
                 <label class="block text-xs font-semibold text-gray-700 mb-2">Login As</label>
-                <input type="hidden" name="role" id="selected_role" value="admin">
                 <div class="grid grid-cols-3 gap-3">
-                    <button type="button" onclick="selectRole('admin', this)" class="role-btn py-2 px-3 text-xs font-medium rounded-lg border bg-[#1C4E55] text-white transition-all">Admin</button>
-                    <button type="button" onclick="selectRole('staff', this)" class="role-btn py-2 px-3 text-xs font-medium rounded-lg border bg-white text-gray-700 hover:bg-gray-50 transition-all">Staff</button>
-                    <button type="button" onclick="selectRole('resident', this)" class="role-btn py-2 px-3 text-xs font-medium rounded-lg border bg-white text-gray-700 hover:bg-gray-50 transition-all">Resident</button>
-                    <button type="button" onclick="selectRole('donor', this)" class="role-btn py-2 px-3 text-xs font-medium rounded-lg border bg-white text-gray-700 hover:bg-gray-50 transition-all">Donor</button>
-                    <button type="button" onclick="selectRole('family', this)" class="role-btn py-2 px-3 text-xs font-medium rounded-lg border bg-white text-gray-700 hover:bg-gray-50 transition-all">Family</button>
-                    <button type="button" onclick="selectRole('volunteer', this)" class="role-btn py-2 px-3 text-xs font-medium rounded-lg border bg-white text-gray-700 hover:bg-gray-50 transition-all">Volunteer</button>
+                    @foreach(['admin' => 'Admin', 'staff' => 'Staff', 'resident' => 'Resident', 'donor' => 'Donor', 'family' => 'Family', 'volunteer' => 'Volunteer'] as $key => $label)
+                    <button type="button"
+                        onclick="setRole('{{ $key }}', this)"
+                        class="role-btn py-2 px-3 text-xs font-medium rounded-lg border transition-all {{ $selectedRole === $key ? 'bg-[#1C4E55] text-white' : 'bg-white text-gray-700 hover:bg-gray-50' }}">
+                        {{ $label }}
+                    </button>
+                    @endforeach
                 </div>
             </div>
 
             <div>
                 <label class="block text-xs font-semibold text-gray-700 mb-1">Email Address <span class="text-red-500">*</span></label>
-                <input type="email" name="email" required placeholder="your@email.com" class="w-full p-2.5 bg-white border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-[#1C4E55]">
+                {{-- value ko blank rakha hai taake wrong login par email clear rahe --}}
+                <input type="email" name="email" value="" required placeholder="your@email.com" class="w-full p-2.5 bg-white border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-[#1C4E55]">
             </div>
 
             <div>
@@ -73,7 +81,6 @@
             </button>
         </form>
 
-        <!-- REGISTER LINK BLOCK (With proper spacing and interactive layer) -->
         <div class="relative z-10 text-center mt-6 py-2">
             <p class="text-xs text-gray-500">
                 New here? <a href="{{ route('register') }}" class="text-[#1C4E55] font-bold hover:underline cursor-pointer px-1 py-1">Register as Donor, Family, or Volunteer</a>
@@ -81,20 +88,18 @@
         </div>
     </div>
 
+    {{-- Script for Role Selection Buttons --}}
     <script>
-        function selectRole(roleName, buttonElement) {
-            // Update hidden input value
-            document.getElementById('selected_role').value = roleName;
+        function setRole(role, btnElement) {
+            document.getElementById('selected_role').value = role;
 
-            // Reset all buttons to default style
             document.querySelectorAll('.role-btn').forEach(btn => {
                 btn.classList.remove('bg-[#1C4E55]', 'text-white');
                 btn.classList.add('bg-white', 'text-gray-700');
             });
 
-            // Apply active style to clicked button
-            buttonElement.classList.remove('bg-white', 'text-gray-700');
-            buttonElement.classList.add('bg-[#1C4E55]', 'text-white');
+            btnElement.classList.remove('bg-white', 'text-gray-700');
+            btnElement.classList.add('bg-[#1C4E55]', 'text-white');
         }
     </script>
     @endsection

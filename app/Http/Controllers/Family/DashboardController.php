@@ -23,7 +23,7 @@ class DashboardController extends Controller
 
         // Aaj ki date ki activities fetch karein
         $activities = DailyActivity::where('resident_id', $resident->id)
-            ->latest('id')
+            ->whereDate('date', today())
             ->first();
 
         // --- Yahan humne latest health vitals fetch kar liye hain ---
