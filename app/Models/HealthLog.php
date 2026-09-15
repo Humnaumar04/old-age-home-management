@@ -6,7 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class HealthLog extends Model
 {
-    protected $fillable = ['resident_id', 'bp', 'sugar', 'temperature', 'logged_by_staff_id'];
+    protected $fillable = [
+        'resident_id',
+        'bp_systolic',
+        'bp_diastolic',
+        'sugar_level',
+        'body_temperature',
+        'pulse_rate',
+        'oxygen_saturation',
+        'logged_by_staff_id',
+    ];
 
     // Yeh health log kis resident ka hai
     public function resident()

@@ -46,28 +46,29 @@
         </div>
         @endif
 
-        <form action="{{ route('login.submit') }}" method="POST" class="space-y-5">
+        <form action="{{ route('login.submit') }}" method="POST" class="space-y-5" id="loginForm">
             @csrf
 
-            @php $selectedRole = old('role', 'admin'); @endphp
+            {{-- Koi default role select nahi — jab tak user khud click na kare, empty rahega --}}
+            @php $selectedRole = old('role'); @endphp
             <input type="hidden" name="role" id="selected_role" value="{{ $selectedRole }}">
 
             <div>
                 <label class="block text-xs font-semibold text-gray-700 mb-2">Login As</label>
-                <div class="grid grid-cols-3 gap-3">
-                    @foreach(['admin' => 'Admin', 'staff' => 'Staff', 'resident' => 'Resident', 'donor' => 'Donor', 'family' => 'Family', 'volunteer' => 'Volunteer'] as $key => $label)
+                <div class="flex flex-wrap justify-center gap-3">
+                    @foreach(['staff' => 'Staff', 'resident' => 'Resident', 'donor' => 'Donor', 'family' => 'Family', 'volunteer' => 'Volunteer'] as $key => $label)
                     <button type="button"
                         onclick="setRole('{{ $key }}', this)"
-                        class="role-btn py-2 px-3 text-xs font-medium rounded-lg border transition-all {{ $selectedRole === $key ? 'bg-[#1C4E55] text-white' : 'bg-white text-gray-700 hover:bg-gray-50' }}">
+                        class="role-btn basis-[calc(33.333%-0.6rem)] py-2 px-3 text-xs font-medium rounded-lg border text-center transition-all {{ $selectedRole === $key ? 'bg-[#1C4E55] text-white' : 'bg-white text-gray-700 hover:bg-gray-50' }}">
                         {{ $label }}
                     </button>
                     @endforeach
                 </div>
+                <p id="roleError" class="hidden text-xs text-red-500 mt-2">Please select a role to continue.</p>
             </div>
 
             <div>
                 <label class="block text-xs font-semibold text-gray-700 mb-1">Email Address <span class="text-red-500">*</span></label>
-                {{-- value ko blank rakha hai taake wrong login par email clear rahe --}}
                 <input type="email" name="email" value="" required placeholder="your@email.com" class="w-full p-2.5 bg-white border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-[#1C4E55]">
             </div>
 
@@ -92,6 +93,7 @@
     <script>
         function setRole(role, btnElement) {
             document.getElementById('selected_role').value = role;
+            document.getElementById('roleError').classList.add('hidden');
 
             document.querySelectorAll('.role-btn').forEach(btn => {
                 btn.classList.remove('bg-[#1C4E55]', 'text-white');
@@ -101,5 +103,14 @@
             btnElement.classList.remove('bg-white', 'text-gray-700');
             btnElement.classList.add('bg-[#1C4E55]', 'text-white');
         }
+
+        // Agar koi role select kiye bina submit kare, tou rok kar batao
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            const roleValue = document.getElementById('selected_role').value;
+            if (!roleValue) {
+                e.preventDefault();
+                document.getElementById('roleError').classList.remove('hidden');
+            }
+        });
     </script>
     @endsection

@@ -27,10 +27,11 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         // Inputs ko validate karna
+        // 'role' ko sirf in 5 values tak restrict kiya — admin is route se allowed nahi
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
-            'role' => 'required'
+            'role' => 'required|in:staff,resident,donor,family,volunteer'
         ]);
 
         // Check credentials in DB
@@ -56,8 +57,6 @@ class AuthController extends Controller
 
             // ROLE BASED REDIRECTION
             switch ($userRole) {
-                case 'admin':
-                    return redirect()->route('admin.dashboard');
                 case 'staff':
                     return redirect()->route('staff.dashboard');
                 case 'resident':
@@ -69,6 +68,7 @@ class AuthController extends Controller
                 case 'volunteer':
                     return redirect()->route('volunteer.dashboard');
                 default:
+                    // Admin (ya koi unexpected role) is route se login nahi kar sakta
                     Auth::logout();
                     return redirect()->route('login');
             }

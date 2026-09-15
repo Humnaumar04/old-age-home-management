@@ -19,6 +19,6 @@ class VolunteerTask extends Model
 
     public function volunteer()
     {
-        return $this->belongsTo(User::class, 'volunteer_id');
+        return $this->belongsTo(Volunteer::class, 'volunteer_id');
     }
 }

@@ -16,6 +16,11 @@
         html {
             scroll-behavior: smooth;
         }
+
+        /* Halka color-grade filter — Unsplash images ko thora unique look dene ke liye */
+        .img-tone {
+            filter: brightness(1.04) contrast(1.08) saturate(1.15) hue-rotate(6deg);
+        }
     </style>
 </head>
 
@@ -97,7 +102,7 @@
         <!-- Right Side Image -->
         <div class="relative">
             <div class="rounded-[2.5rem] overflow-hidden shadow-2xl">
-                <img src="{{ asset('images/elderly-care.jpg') }}" alt="Elderly Care" class="w-full h-[500px] object-cover">
+                <img src="{{ asset('images/elderly-care.jpg') }}" alt="Elderly Care" class="img-tone w-full h-[500px] object-cover">
             </div>
 
             <div class="absolute -top-6 -right-4 bg-white/95 backdrop-blur px-5 py-3 rounded-2xl shadow-xl flex items-center space-x-3 border border-gray-100">
@@ -130,7 +135,7 @@
             <div class="bg-white rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-xl transition group duration-300 overflow-hidden flex flex-col justify-between">
                 <div>
                     <div class="overflow-hidden h-52 w-full relative">
-                        <img src="{{ asset('images/service-1.jpg') }}" alt="Dedicated Care" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy">
+                        <img src="{{ asset('images/service-1.jpg') }}" alt="Dedicated Care" class="img-tone w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy">
                         <div class="absolute top-4 left-4 bg-[#1E3E3F] text-white p-2.5 rounded-xl text-lg shadow-md">👥</div>
                     </div>
                     <div class="p-8 pb-4">
@@ -153,7 +158,7 @@
             <div class="bg-white rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-xl transition group duration-300 overflow-hidden flex flex-col justify-between">
                 <div>
                     <div class="overflow-hidden h-52 w-full relative">
-                        <img src="{{ asset('images/service-2.jpg') }}" alt="Transparent Donations" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy">
+                        <img src="{{ asset('images/service-2.jpg') }}" alt="Transparent Donations" class="img-tone w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy">
                         <div class="absolute top-4 left-4 bg-orange-600 text-white p-2.5 rounded-xl text-lg shadow-md">🎁</div>
                     </div>
                     <div class="p-8 pb-4">
@@ -176,7 +181,7 @@
             <div class="bg-white rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-xl transition group duration-300 overflow-hidden flex flex-col justify-between">
                 <div>
                     <div class="overflow-hidden h-52 w-full relative">
-                        <img src="{{ asset('images/service-3.jpg') }}" alt="Seamless Family Connection" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy">
+                        <img src="{{ asset('images/service-3.jpg') }}" alt="Seamless Family Connection" class="img-tone w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy">
                         <div class="absolute top-4 left-4 bg-blue-600 text-white p-2.5 rounded-xl text-lg shadow-md">💬</div>
                     </div>
                     <div class="p-8 pb-4">
@@ -276,7 +281,7 @@
                 </div>
             </div>
             <div class="h-full min-h-[400px] lg:min-h-[550px] relative">
-                <img src="{{ asset('images/volunteer-care.jpg') }}" alt="Volunteer Support" class="w-full h-full object-cover" loading="lazy">
+                <img src="{{ asset('images/volunteer-care.jpg') }}" alt="Volunteer Support" class="img-tone w-full h-full object-cover" loading="lazy">
                 <div class="absolute bottom-10 left-10 bg-white p-4 rounded-2xl shadow-lg border border-gray-100 flex items-center space-x-3 text-[#1E3E3F]">
                     <div class="bg-blue-50 p-2 rounded-lg text-blue-600">⭐</div>
                     <div>

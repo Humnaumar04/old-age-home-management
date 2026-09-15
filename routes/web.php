@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\ResidentController;
 use App\Http\Controllers\Admin\ApprovalController;
@@ -29,10 +30,18 @@ Route::get('/', function () {
     return view('landing');
 })->name('landing');
 
-// Login
+// =====================================================
+// PUBLIC LOGIN — Staff, Resident, Donor, Family, Volunteer
+// =====================================================
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// =====================================================
+// ADMIN LOGIN — separate, unlisted route (kahin link nahi hoga)
+// =====================================================
+Route::get('/admin/login', [AdminAuthController::class, 'showLogin'])->name('admin.login');
+Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login.submit');
 
 // Registration
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');

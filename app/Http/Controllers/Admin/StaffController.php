@@ -26,6 +26,21 @@ class StaffController extends Controller
     // 3. Form ka data Database mein Save karne ke liye
     public function store(Request $request)
     {
+        // 0. Pehle validation — taake duplicate email ya missing password 500 error na dein
+        $request->validate([
+            'name'             => 'required|string|max:255',
+            'email'            => 'required|email|unique:users,email',
+            'password'         => 'required|string|min:6|confirmed',
+            'cnic'             => 'nullable|string|max:20',
+            'phone'            => 'nullable|string|max:20',
+            'shift'            => 'required|string',
+            'date_of_joining'  => 'nullable|date',
+            'salary'           => 'nullable|numeric',
+            'address'          => 'nullable|string',
+            'emergency_name'   => 'nullable|string|max:255',
+            'emergency_phone'  => 'nullable|string|max:20',
+        ]);
+
         // 1. Pehle users table mein login account banayein
         $user = User::create([
             'name'     => $request->name,
@@ -67,9 +82,17 @@ class StaffController extends Controller
         $staff = Staff::findOrFail($id);
 
         $request->validate([
-            'name'  => 'required|string|max:255',
-            'phone' => 'required|string',
-            'shift' => 'required|string',
+            'name'     => 'required|string|max:255',
+            'phone'    => 'required|string',
+            'shift'    => 'required|string',
+            'email'    => 'nullable|email|unique:users,email,' . $staff->user_id,
+            'password' => 'nullable|string|min:6|confirmed',
+            'cnic'     => 'nullable|string|max:20',
+            'date_of_joining' => 'nullable|date',
+            'salary'   => 'nullable|numeric',
+            'address'  => 'nullable|string',
+            'emergency_name'  => 'nullable|string|max:255',
+            'emergency_phone' => 'nullable|string|max:20',
         ]);
 
         // 1. Staff table ka data update karein
@@ -81,8 +104,8 @@ class StaffController extends Controller
             if ($user) {
                 $user->update([
                     'name'  => $request->name,
-                    'email' => $request->email ?? $user->email, // Agar email diya hai toh update ho jaye
-                    'password' => $request->password ?? $user->password,
+                    'email' => $request->filled('email') ? $request->email : $user->email, // Agar email diya hai toh update ho jaye
+                    'password' => $request->filled('password') ? $request->password : $user->password, // Sirf tab update ho jab naya password diya ho, warna purana hi rahe
                     'cnic'            => $request->cnic,
                     'phone'           => $request->phone,
                     'shift'           => $request->shift,
