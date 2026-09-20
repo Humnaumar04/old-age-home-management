@@ -70,6 +70,16 @@ class VolunteerController extends Controller
         // 1. Task ko dhoondhein
         $task = VolunteerTask::findOrFail($id);
 
+        // Security check: yeh task ya to "common" honi chahiye (volunteer_id null)
+        // ya phir isi logged-in volunteer ko assign honi chahiye — warna koi bhi
+        // authenticated volunteer sirf URL mein ID badal kar kisi doosre volunteer
+        // ki task complete kar sakta tha aur uske stats bhi galat badha sakta tha.
+        $currentVolunteer = Volunteer::where('user_id', Auth::id())->first();
+
+        if ($task->volunteer_id !== null && (!$currentVolunteer || $task->volunteer_id != $currentVolunteer->id)) {
+            abort(403, 'You are not authorized to complete this task.');
+        }
+
         if ($task->status !== 'Completed') {
             // 2. Status update kar ke save karein
             $task->status = 'Completed';

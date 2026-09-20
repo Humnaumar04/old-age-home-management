@@ -41,7 +41,7 @@
 </div>
 
 <!-- All Requirements Table -->
-<div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden p-2">
+<div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-x-auto p-2">
     <div class="px-6 py-4 border-b border-gray-100">
         <h2 class="font-bold text-lg text-[#1E4C56]">All Requirements</h2>
     </div>

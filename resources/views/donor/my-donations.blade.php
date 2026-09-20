@@ -12,7 +12,7 @@
     </a>
 </div>
 
-<div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden p-2">
+<div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-x-auto p-2">
     <table class="w-full text-left border-collapse">
         <thead>
             <tr class="text-xs text-gray-400 uppercase border-b border-gray-100 bg-gray-50/50">

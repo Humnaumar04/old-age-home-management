@@ -14,7 +14,7 @@
             <a href="/resident/submit-complaint" class="text-[#1E4C56] font-semibold hover:underline">← Back to Submit Complaint</a>
         </div>
 
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 overflow-x-auto">
             <table class="w-full text-left">
                 <thead>
                     <tr class="text-gray-400 text-xs uppercase border-b">

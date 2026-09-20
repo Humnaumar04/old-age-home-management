@@ -37,7 +37,7 @@
 </div>
 
 <div id="section-pending">
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-x-auto">
         <table class="w-full text-sm">
             <thead>
                 <tr class="bg-[#F8F6F0] text-gray-500 text-xs font-semibold uppercase tracking-wider">

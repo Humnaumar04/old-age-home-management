@@ -12,7 +12,7 @@
     </div>
     @endif
 
-    <div class="bg-white shadow-md rounded-lg overflow-hidden">
+    <div class="bg-white shadow-md rounded-lg overflow-x-auto">
         <table class="min-w-full leading-normal">
             <thead>
                 <tr class="bg-gray-100 border-b border-gray-200">

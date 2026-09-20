@@ -62,7 +62,7 @@
             <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6">
                 <h3 class="text-lg font-bold text-[#1E4C56] mb-4">Current Health Vitals</h3>
 
-                <div class="grid grid-cols-3 gap-4">
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
                     <!-- Blood Pressure -->
                     <div class="bg-gray-50 p-4 rounded-xl text-center">
                         <p class="text-lg mb-1">⚡</p>
@@ -100,7 +100,7 @@
             <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6">
                 <h3 class="text-lg font-bold text-[#1E4C56] mb-4">Today's Activity Log</h3>
 
-                <div class="grid grid-cols-4 gap-4">
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
 
                     <!-- Breakfast -->
                     @php

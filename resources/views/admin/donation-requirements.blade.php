@@ -67,7 +67,7 @@
     </div>
 
     <!-- Current Requirements Table -->
-    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden p-6">
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-x-auto p-6">
         <h3 class="text-lg font-semibold text-[#1E4C56] mb-4">Current Requirements List</h3>
 
         <table class="w-full text-left border-collapse">

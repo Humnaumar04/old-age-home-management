@@ -224,9 +224,9 @@
         if (method === 'HBL Bank Transfer') {
             accNumber.innerHTML = '<strong>Bank: HBL | Account:</strong> 0123-0123456789-01 <br><strong>IBAN:</strong> PK36 HABB 0000 0000 0000 0000';
         } else if (method === 'JazzCash') {
-            accNumber.innerHTML = '<strong>JazzCash Account:</strong> 03088550880 <br><strong>Title:</strong> Old Age Home Trust';
+            accNumber.innerHTML = '<strong>JazzCash Account:</strong> 0300-1234567 <br><strong>Title:</strong> Old Age Home Trust';
         } else if (method === 'Easypaisa') {
-            accNumber.innerHTML = '<strong>Easypaisa Account:</strong> 0345-7654321 <br><strong>Title:</strong> Old Age Home Trust';
+            accNumber.innerHTML = '<strong>Easypaisa Account:</strong> 0300-7654321 <br><strong>Title:</strong> Old Age Home Trust';
         }
     }
 </script>

@@ -22,7 +22,7 @@
             <a href="/resident/request-help" class="text-sm font-semibold text-[#1E4C56] hover:underline">← Back to Request Help</a>
         </div>
 
-        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-x-auto">
             <table class="w-full text-left">
                 <thead class="bg-gray-50 text-gray-500 uppercase text-xs font-bold">
                     <tr>

@@ -24,7 +24,7 @@
     </div>
 
     <!-- Donors Tab -->
-    <div id="tab-donors" class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    <div id="tab-donors" class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-x-auto">
         <table class="w-full text-sm">
             <thead>
                 <tr class="bg-[#F8F6F0] text-gray-500 text-xs font-semibold uppercase tracking-wider">
@@ -56,7 +56,7 @@
     </div>
 
     <!-- Family Tab -->
-    <div id="tab-family" class="hidden bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    <div id="tab-family" class="hidden bg-white rounded-2xl shadow-sm border border-gray-100 overflow-x-auto">
         <table class="w-full text-sm">
             <thead>
                 <tr class="bg-[#F8F6F0] text-gray-500 text-xs font-semibold uppercase tracking-wider">
@@ -88,7 +88,7 @@
     </div>
 
     <!-- Volunteers Tab -->
-    <div id="tab-volunteers" class="hidden bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    <div id="tab-volunteers" class="hidden bg-white rounded-2xl shadow-sm border border-gray-100 overflow-x-auto">
         <table class="w-full text-sm">
             <thead>
                 <tr class="bg-[#F8F6F0] text-gray-500 text-xs font-semibold uppercase tracking-wider">

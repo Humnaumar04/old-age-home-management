@@ -34,12 +34,12 @@
             </div>
             <!-- Doctor Name Added Here -->
             <div class="flex justify-between items-start py-3">
-    <span class="text-gray-500">Assigned Staff</span>
-    <div class="text-right">
-        <p class="font-bold text-gray-800">{{ $resident->doctor_name ?? 'N/A' }}</p>
-        <p class="text-xs text-gray-400 italic mt-1">For reference only</p>
-    </div>
-</div>
+                <span class="text-gray-500">Assigned Staff</span>
+                <div class="text-right">
+                    <p class="font-bold text-gray-800">{{ $resident->doctor_name ?? 'N/A' }}</p>
+                    <p class="text-xs text-gray-400 italic mt-1">For reference only</p>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -48,7 +48,7 @@
         <!-- Vitals -->
         <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
             <h3 class="font-bold text-[#1E4C56] mb-6">Today's Health Vitals</h3>
-            <div class="grid grid-cols-3 gap-4">
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
                 <!-- Blood Pressure -->
                 <div class="bg-gray-50 p-4 rounded-xl text-center">
                     <p class="text-lg mb-1">⚡</p>
@@ -85,7 +85,7 @@
         <!-- Activities -->
         <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
             <h3 class="font-bold text-[#1E4C56] mb-6">Daily Activities</h3>
-            <div class="grid grid-cols-4 gap-4">
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
 
                 <!-- Breakfast -->
                 @php
