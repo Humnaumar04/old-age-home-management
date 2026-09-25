@@ -151,6 +151,26 @@
             </div>
         </div>
 
+        <!-- SECTION 4: ACCOUNT ACCESS -->
+        <div>
+            <h3 class="text-xs font-bold text-[#2A6673] tracking-wider uppercase mb-4 flex items-center space-x-2">
+                <span>🔒</span> <span>Account Access</span>
+            </h3>
+            <hr class="mb-6 border-gray-100">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">New Password</label>
+                    <input type="password" name="password" minlength="6" placeholder="Leave blank to keep current password" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-[#1E4C56] transition bg-gray-50/30">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Confirm New Password</label>
+                    <input type="password" name="password_confirmation" minlength="6" placeholder="Re-enter the new password" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-[#1E4C56] transition bg-gray-50/30">
+                </div>
+            </div>
+            <p class="text-xs text-gray-400 mt-2">Only fill this in if the resident forgot their password and needs it reset.</p>
+        </div>
+
         <!-- Action Buttons -->
         <div class="flex space-x-3 pt-4 border-t border-gray-50">
             <button type="submit" class="bg-[#1E4C56] hover:bg-[#15353d] text-white px-6 py-2.5 rounded-xl font-semibold shadow-sm transition flex items-center space-x-2">

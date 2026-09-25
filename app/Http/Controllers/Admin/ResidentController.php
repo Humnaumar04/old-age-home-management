@@ -102,11 +102,19 @@ class ResidentController extends Controller
             'emergency_contact_phone' => 'required|string',
             'doctor_name' => 'nullable|string|max:255',
             'family_user_id' => 'nullable|exists:users,id',
+            'password' => 'nullable|string|min:6|confirmed',
         ], [
             'age.min' => 'Old age home admission requires the resident to be at least 60 years old.'
         ]);
 
-        $resident->update($request->all());
+        $resident->update($request->except(['password', 'password_confirmation']));
+
+        // Agar admin ne naya password diya hai, to sirf tab resident ka login password update karo
+        if ($request->filled('password') && $resident->user_id) {
+            User::where('id', $resident->user_id)->update([
+                'password' => $request->password, // 'hashed' cast se automatically hash ho jayega
+            ]);
+        }
 
         return redirect()->route('admin.manage_residents')
             ->with('success', 'Resident updated successfully!');

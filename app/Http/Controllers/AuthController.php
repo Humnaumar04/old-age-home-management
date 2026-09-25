@@ -103,7 +103,10 @@ class AuthController extends Controller
             'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'type' => 'required|string',
+            // Security fix: 'type' aata hai ek hidden input se jise koi bhi
+            // browser dev-tools se ya seedha POST request se badal sakta hai.
+            // 'in:' rule ke bina koi bhi apne aap ko "Admin" ya "Staff" bana sakta tha.
+            'type' => 'required|string|in:Donor,Family,Volunteer',
             'relative_name' => 'required_if:type,Family',
         ]);
 

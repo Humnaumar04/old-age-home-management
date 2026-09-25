@@ -34,6 +34,7 @@
                     <th class="px-6 py-4 text-left">Address</th>
                     <th class="px-6 py-4 text-left">Total Donations</th>
                     <th class="px-6 py-4 text-left">Joined</th>
+                    <th class="px-6 py-4 text-left">Action</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200 bg-white">
@@ -45,10 +46,13 @@
                     <td class="px-6 py-4 text-gray-500">{{ $donor->address ?? 'N/A' }}</td>
                     <td class="px-6 py-4 text-gray-500">{{ $donor->donation_count }} ({{ $donor->donation_types }})</td>
                     <td class="px-6 py-4 text-gray-500">{{ $donor->created_at->format('d M, Y') }}</td>
+                    <td class="px-6 py-4">
+                        <a href="{{ route('admin.community_members.reset_password.show', $donor->id) }}" class="text-[#1E4C56] hover:underline text-xs font-semibold">Reset Password</a>
+                    </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6" class="px-6 py-8 text-center text-gray-400">No approved donors yet.</td>
+                    <td colspan="7" class="px-6 py-8 text-center text-gray-400">No approved donors yet.</td>
                 </tr>
                 @endforelse
             </tbody>
@@ -66,6 +70,7 @@
                     <th class="px-6 py-4 text-left">Address</th>
                     <th class="px-6 py-4 text-left">Linked Resident</th>
                     <th class="px-6 py-4 text-left">Joined</th>
+                    <th class="px-6 py-4 text-left">Action</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200 bg-white">
@@ -77,10 +82,13 @@
                     <td class="px-6 py-4 text-gray-500">{{ $member->address ?? 'N/A' }}</td>
                     <td class="px-6 py-4 text-gray-500">{{ $member->linked_resident }}</td>
                     <td class="px-6 py-4 text-gray-500">{{ $member->created_at->format('d M, Y') }}</td>
+                    <td class="px-6 py-4">
+                        <a href="{{ route('admin.community_members.reset_password.show', $member->id) }}" class="text-[#1E4C56] hover:underline text-xs font-semibold">Reset Password</a>
+                    </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6" class="px-6 py-8 text-center text-gray-400">No approved family members yet.</td>
+                    <td colspan="7" class="px-6 py-8 text-center text-gray-400">No approved family members yet.</td>
                 </tr>
                 @endforelse
             </tbody>
@@ -98,6 +106,7 @@
                     <th class="px-6 py-4 text-left">Address</th>
                     <th class="px-6 py-4 text-left">Tasks Completed</th>
                     <th class="px-6 py-4 text-left">Hours This Month</th>
+                    <th class="px-6 py-4 text-left">Action</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200 bg-white">
@@ -109,10 +118,13 @@
                     <td class="px-6 py-4 text-gray-500">{{ $volunteer->address ?? 'N/A' }}</td>
                     <td class="px-6 py-4 text-gray-500">{{ $volunteer->tasks_completed }}</td>
                     <td class="px-6 py-4 text-gray-500">{{ $volunteer->hours_this_month }}</td>
+                    <td class="px-6 py-4">
+                        <a href="{{ route('admin.community_members.reset_password.show', $volunteer->id) }}" class="text-[#1E4C56] hover:underline text-xs font-semibold">Reset Password</a>
+                    </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6" class="px-6 py-8 text-center text-gray-400">No approved volunteers yet.</td>
+                    <td colspan="7" class="px-6 py-8 text-center text-gray-400">No approved volunteers yet.</td>
                 </tr>
                 @endforelse
             </tbody>

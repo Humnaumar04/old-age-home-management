@@ -108,6 +108,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/admin/approvals/{id}/action', [ApprovalController::class, 'action'])->name('admin.approvals.action');
     // Community Members
     Route::get('/admin/community-members', [CommunityMemberController::class, 'index'])->name('admin.community_members');
+    Route::get('/admin/community-members/{id}/reset-password', [CommunityMemberController::class, 'showResetPassword'])->name('admin.community_members.reset_password.show');
+    Route::put('/admin/community-members/{id}/reset-password', [CommunityMemberController::class, 'resetPassword'])->name('admin.community_members.reset_password');
     // Emergency Reports (Admin view)
     Route::get('/admin/emergency-reports', [EmergencyController::class, 'showReports'])->name('admin.emergency_reports');
     Route::patch('/admin/emergency-reports/{id}/resolve', [EmergencyController::class, 'resolve'])->name('admin.emergency.resolve');

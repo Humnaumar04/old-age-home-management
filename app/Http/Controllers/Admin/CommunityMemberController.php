@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Donation;
 use App\Models\Resident;
@@ -47,5 +48,28 @@ class CommunityMemberController extends Controller
             });
 
         return view('admin.community-members', compact('donors', 'family', 'volunteers'));
+    }
+
+    // Reset-password form for a donor, family, or volunteer account
+    public function showResetPassword($id)
+    {
+        $user = User::findOrFail($id);
+        return view('admin.reset-password', compact('user'));
+    }
+
+    // Actually update the password
+    public function resetPassword(Request $request, $id)
+    {
+        $request->validate([
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+        $user = User::findOrFail($id);
+        $user->update([
+            'password' => $request->password, // 'password' cast as 'hashed' on User model, so this is hashed automatically
+        ]);
+
+        return redirect()->route('admin.community_members')
+            ->with('success', 'Password reset successfully for ' . $user->name . '.');
     }
 }
