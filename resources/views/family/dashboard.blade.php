@@ -67,10 +67,10 @@
                     <div class="bg-gray-50 p-4 rounded-xl text-center">
                         <p class="text-lg mb-1">⚡</p>
                         <p class="text-xl font-bold text-gray-800">
-                            @if(isset($latestVitals))
+                            @if(isset($latestVitals) && $latestVitals->bp_systolic && $latestVitals->bp_diastolic)
                             {{ $latestVitals->bp_systolic }}/{{ $latestVitals->bp_diastolic }}
                             @else
-                            130/85
+                            N/A
                             @endif
                         </p>
                         <p class="text-xs text-gray-500">Blood Pressure</p>
@@ -80,7 +80,10 @@
                     <div class="bg-gray-50 p-4 rounded-xl text-center">
                         <p class="text-lg mb-1">💧</p>
                         <p class="text-xl font-bold text-gray-800">
-                            {{ $latestVitals->sugar_level ?? '6.0' }} <span class="text-xs font-normal">mmol/L</span>
+                            {{ $latestVitals->sugar_level ?? 'N/A' }}
+                            @if($latestVitals?->sugar_level)
+                            <span class="text-xs font-normal">mmol/L</span>
+                            @endif
                         </p>
                         <p class="text-xs text-gray-500">Blood Sugar</p>
                     </div>
@@ -89,7 +92,10 @@
                     <div class="bg-gray-50 p-4 rounded-xl text-center">
                         <p class="text-lg mb-1">🌡️</p>
                         <p class="text-xl font-bold text-gray-800">
-                            {{ $latestVitals->body_temperature ?? '98.4' }} <span class="text-xs font-normal">°F</span>
+                            {{ $latestVitals->body_temperature ?? 'N/A' }}
+                            @if($latestVitals?->body_temperature)
+                            <span class="text-xs font-normal">°F</span>
+                            @endif
                         </p>
                         <p class="text-xs text-gray-500">Temperature</p>
                     </div>

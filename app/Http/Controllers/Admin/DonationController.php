@@ -46,12 +46,18 @@ class DonationController extends Controller
     // 3. Status update karne ke liye
     public function updateDonationStatus(Request $request, $id)
     {
+        $request->validate([
+            'status' => 'required|in:Pending,Approved,Rejected,Completed',
+        ]);
+
         $donation = Donation::findOrFail($id);
 
         $donation->status = $request->status;
         $donation->save();
 
-        return redirect()->route('admin.donations.received')->with('success', 'Donation status updated successfully!');
+        return redirect()
+            ->route('admin.donations.received')
+            ->with('success', 'Donation status updated successfully!');
     }
 
     public function store(Request $request)

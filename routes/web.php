@@ -158,45 +158,77 @@ Route::middleware(['auth', 'role:staff'])->group(function () {
     })->name('staff.update_health');
 
     Route::post('/staff/resident/{id}/save-health', function (\Illuminate\Http\Request $request, $id) {
+
+        $request->validate([
+            'medical_condition' => 'required|in:Stable,Critical,Under Observation',
+            'bp_systolic' => 'nullable|numeric|min:50|max:250',
+            'bp_diastolic' => 'nullable|numeric|min:30|max:150',
+            'sugar_level' => 'nullable|numeric|min:0|max:1000',
+            'body_temperature' => 'nullable|numeric|min:80|max:120',
+            'pulse_rate' => 'nullable|numeric|min:30|max:250',
+            'oxygen_saturation' => 'nullable|numeric|min:50|max:100',
+            'act_breakfast' => 'nullable|string|max:50',
+            'act_morning_walk' => 'nullable|string|max:50',
+            'act_lunch' => 'nullable|string|max:50',
+            'act_medication' => 'nullable|string|max:50',
+            'act_physical_therapy' => 'nullable|string|max:50',
+            'act_dinner' => 'nullable|string|max:50',
+            'act_sleep_routine' => 'nullable|string|max:50',
+            'staff_notes' => 'nullable|string|max:1000',
+        ]);
+
         $resident = \App\Models\Resident::findOrFail($id);
 
         try {
-            $resident->update([
-                'medical_condition' => $request->medical_condition,
-            ]);
+
+            DB::transaction(function () use ($request, $resident, $id) {
+
+                // Update resident medical condition
+                $resident->update([
+                    'medical_condition' => $request->medical_condition,
+                ]);
+
+                // Save health record
+                DB::table('health_logs')->insert([
+                    'resident_id'        => $id,
+                    'bp_systolic'        => $request->bp_systolic,
+                    'bp_diastolic'       => $request->bp_diastolic,
+                    'sugar_level'        => $request->sugar_level,
+                    'body_temperature'   => $request->body_temperature,
+                    'pulse_rate'         => $request->pulse_rate,
+                    'oxygen_saturation'  => $request->oxygen_saturation,
+                    'logged_by_staff_id' => Auth::id(),
+                    'created_at'         => now(),
+                    'updated_at'         => now(),
+                ]);
+
+                // Save daily activities
+                DB::table('daily_activities')->insert([
+                    'resident_id'       => $id,
+                    'breakfast'         => $request->act_breakfast,
+                    'morning_walk'      => $request->act_morning_walk,
+                    'lunch'             => $request->act_lunch,
+                    'medication_taken'  => $request->act_medication,
+                    'physical_therapy'  => $request->act_physical_therapy,
+                    'dinner'            => $request->act_dinner,
+                    'sleep_routine'     => $request->act_sleep_routine,
+                    'staff_notes'       => $request->staff_notes,
+                    'date'              => today()->toDateString(),
+                    'created_at'        => now(),
+                    'updated_at'        => now(),
+                ]);
+            });
         } catch (\Exception $e) {
-            // Fallback catch
+
+            return back()->with(
+                'error',
+                'Failed to save health record. Please try again.'
+            );
         }
 
-        DB::table('health_logs')->insert([
-            'resident_id'        => $id,
-            'bp_systolic'        => $request->bp_systolic,
-            'bp_diastolic'       => $request->bp_diastolic,
-            'sugar_level'        => $request->sugar_level,
-            'body_temperature'   => $request->body_temperature,
-            'pulse_rate'         => $request->pulse_rate,
-            'oxygen_saturation'  => $request->oxygen_saturation,
-            'logged_by_staff_id' => Auth::id() ?? 1,
-            'created_at'         => now(),
-            'updated_at'         => now(),
-        ]);
-
-        DB::table('daily_activities')->insert([
-            'resident_id'       => $id,
-            'breakfast'         => $request->act_breakfast,
-            'morning_walk'      => $request->act_morning_walk,
-            'lunch'             => $request->act_lunch,
-            'medication_taken'  => $request->act_medication,
-            'physical_therapy'  => $request->act_physical_therapy,
-            'dinner'            => $request->act_dinner,
-            'sleep_routine'     => $request->act_sleep_routine,
-            'staff_notes'       => $request->staff_notes,
-            'date'              => today()->toDateString(),
-            'created_at'        => now(),
-            'updated_at'        => now(),
-        ]);
-
-        return redirect()->route('staff.dashboard')->with('success', 'Health Record Saved Successfully!');
+        return redirect()
+            ->route('staff.dashboard')
+            ->with('success', 'Health Record Saved Successfully!');
     })->name('staff.save_health');
 
     // Emergency reporting (Staff files it)

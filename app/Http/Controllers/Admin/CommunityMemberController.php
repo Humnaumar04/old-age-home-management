@@ -54,6 +54,11 @@ class CommunityMemberController extends Controller
     public function showResetPassword($id)
     {
         $user = User::findOrFail($id);
+
+        if (!in_array(strtolower($user->role), ['donor', 'family', 'volunteer'])) {
+            abort(403, 'You are not authorized to reset this user password.');
+        }
+
         return view('admin.reset-password', compact('user'));
     }
 
@@ -65,6 +70,9 @@ class CommunityMemberController extends Controller
         ]);
 
         $user = User::findOrFail($id);
+        if (!in_array(strtolower($user->role), ['donor', 'family', 'volunteer'])) {
+            abort(403, 'You are not authorized to reset this user password.');
+        }
         $user->update([
             'password' => $request->password, // 'password' cast as 'hashed' on User model, so this is hashed automatically
         ]);
