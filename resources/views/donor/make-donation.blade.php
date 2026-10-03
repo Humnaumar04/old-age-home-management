@@ -61,7 +61,7 @@
                     <label class="block text-sm font-medium text-gray-700 mb-2">Payment Method *</label>
                     <select name="payment_method" id="payment_method_select" onchange="showPaymentDetails()" class="w-full border-gray-200 rounded-xl p-3 focus:border-[#1E4C56] focus:ring-[#1E4C56] bg-gray-50/50 text-gray-600">
                         <option value="">-- Select Payment Method --</option>
-                        <option value="HBL Bank Transfer">HBL Bank Transfer</option>
+                        <option value="MCB Bank Transfer">MCB Bank Transfer</option>
                         <option value="JazzCash">JazzCash</option>
                         <option value="Easypaisa">Easypaisa</option>
                     </select>
@@ -221,12 +221,12 @@
 
         box.classList.remove('hidden');
 
-        if (method === 'HBL Bank Transfer') {
-            accNumber.innerHTML = '<strong>Bank: HBL | Account:</strong> 0123-0123456789-01 <br><strong>IBAN:</strong> PK36 HABB 0000 0000 0000 0000';
+        if (method === 'MCB Bank Transfer') {
+            accNumber.innerHTML = '<strong>Bank: MCB | Account:</strong> 1672598791009484 <br><strong>IBAN:</strong> PK14 MUCB 1672 5987 9100 9484';
         } else if (method === 'JazzCash') {
-            accNumber.innerHTML = '<strong>JazzCash Account:</strong> 0300-1234567 <br><strong>Title:</strong> Old Age Home Trust';
+            accNumber.innerHTML = '<strong>JazzCash Account:</strong> 03088550880 <br><strong>Title:</strong> Old Age Home Trust';
         } else if (method === 'Easypaisa') {
-            accNumber.innerHTML = '<strong>Easypaisa Account:</strong> 0300-7654321 <br><strong>Title:</strong> Old Age Home Trust';
+            accNumber.innerHTML = '<strong>Easypaisa Account:</strong> 03254568826 <br><strong>Title:</strong> Old Age Home Trust';
         }
     }
 </script>

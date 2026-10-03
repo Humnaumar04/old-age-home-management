@@ -12,10 +12,9 @@ use App\Models\Volunteer;
 
 class AuthController extends Controller
 {
-    // 1. Login Screen dikhane ke liye (Teeno Models se dynamic counts)
+    // 1. Login Screen dikhane ke liye
     public function showLogin()
     {
-        // Teeno dedicated models se direct counting
         $residentsCount = Resident::count();
         $staffCount = Staff::count();
         $volunteersCount = Volunteer::count();
@@ -26,26 +25,21 @@ class AuthController extends Controller
     // 2. Login Logic
     public function login(Request $request)
     {
-        // Inputs ko validate karna
-        // 'role' ko sirf in 5 values tak restrict kiya — admin is route se allowed nahi
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
             'role' => 'required|in:staff,resident,donor,family,volunteer'
         ]);
 
-        // Check credentials in DB
         if (Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password']])) {
 
             $user = Auth::user();
 
-            // Case-insensitive role check
             if (strtolower($user->role) !== strtolower($request->role)) {
                 Auth::logout();
                 return back()->withErrors(['email' => 'Selected role does not match our records.'])->withInput($request->only('role'));
             }
 
-            // Status check
             if (strtolower($user->status) !== 'approved') {
                 Auth::logout();
                 return back()->withErrors(['email' => 'Your account is still pending Admin approval.'])->withInput($request->only('role'));
@@ -55,7 +49,6 @@ class AuthController extends Controller
 
             $userRole = strtolower($user->role);
 
-            // ROLE BASED REDIRECTION
             switch ($userRole) {
                 case 'staff':
                     return redirect()->route('staff.dashboard');
@@ -68,13 +61,11 @@ class AuthController extends Controller
                 case 'volunteer':
                     return redirect()->route('volunteer.dashboard');
                 default:
-                    // Admin (ya koi unexpected role) is route se login nahi kar sakta
                     Auth::logout();
                     return redirect()->route('login');
             }
         }
 
-        // Agar password ya email galat ho
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ])->withInput($request->only('role'));
@@ -95,7 +86,7 @@ class AuthController extends Controller
         return view('auth.register');
     }
 
-    // 5. Register Logic
+    // 5. Register Logic (FIXED)
     public function registerSubmit(Request $request)
     {
         $request->validate([
@@ -103,11 +94,22 @@ class AuthController extends Controller
             'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            // Security fix: 'type' aata hai ek hidden input se jise koi bhi
-            // browser dev-tools se ya seedha POST request se badal sakta hai.
-            // 'in:' rule ke bina koi bhi apne aap ko "Admin" ya "Staff" bana sakta tha.
             'type' => 'required|string|in:Donor,Family,Volunteer',
-            'relative_name' => 'required_if:type,Family',
+            // VALIDATION FIX: Agar Family select hoga toh relative_name residents table me 'name' column me exist karna lazmi hai
+            'relative_name' => [
+                'nullable',
+                'required_if:type,Family',
+                function ($attribute, $value, $fail) use ($request) {
+                    if ($request->type === 'Family') {
+                        $exists = Resident::where('name', $value)->exists();
+                        if (!$exists) {
+                            $fail('The provided resident name was not found in our records.');
+                        }
+                    }
+                },
+            ],
+        ], [
+            'relative_name.required_if' => 'Please enter the resident name who is your relative.',
         ]);
 
         $user = User::create([
@@ -121,7 +123,7 @@ class AuthController extends Controller
             'relative_name' => $request->relative_name,
             'password' => Hash::make($request->password),
             'role' => strtolower($request->type),
-            'status' => 'pending',
+            'status' => 'pending', // Account status pending rahega jab tak Admin approve na kare
         ]);
 
         if (strtolower($request->type) === 'volunteer') {
